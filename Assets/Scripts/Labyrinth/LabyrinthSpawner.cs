@@ -51,8 +51,8 @@ public class LabyrinthSpawner : MonoBehaviour
                 float z = row * (CellHeight + (AddGaps ? .2f : 0));
                 LabyrinthCell cell = mLabyrinthContainer.GetLabyrinthCell(row, column);
                 GameObject tmp;
-                tmp = Instantiate(Floor, new Vector3(x, 0, z), Quaternion.Euler(0,0,0)) as GameObject;
-                tmp.transform.parent = transform;
+                // tmp = Instantiate(Floor, new Vector3(x, 0, z), Quaternion.Euler(0,0,0)) as GameObject;
+                // tmp.transform.parent = transform;
 
                 if (cell.WallRight)
                 {

@@ -22,7 +22,7 @@ public class PlayerMovement : MonoBehaviour
 
     [Header("Keybinds")] public KeyCode JumpKey = KeyCode.Space;
     
-    public Transform orientation;
+    public Transform playerPrefab;
     
     private float horizontalInput;
     private float verticalInput;
@@ -85,7 +85,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void MovePlayer()
     {
-        moveDirection = orientation.forward * verticalInput + orientation.right * horizontalInput;
+        moveDirection = playerPrefab.forward * verticalInput + playerPrefab.right * horizontalInput;
         if (grounded)
         {
             rb.AddForce(moveDirection.normalized * (moveSpeed * 10f), ForceMode.Force);
