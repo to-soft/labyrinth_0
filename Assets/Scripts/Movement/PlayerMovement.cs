@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class PlayerMovement : MonoBehaviour
 {
@@ -20,9 +21,10 @@ public class PlayerMovement : MonoBehaviour
     public LayerMask whatIsGround;
     private bool grounded;
 
-    [Header("Keybinds")] public KeyCode JumpKey = KeyCode.Space;
-    
-    public Transform orientation;
+    [Header("Keybinds")] 
+    public KeyCode JumpKey = KeyCode.Space;
+
+    public Transform playerPrefab;
     
     private float horizontalInput;
     private float verticalInput;
@@ -85,7 +87,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void MovePlayer()
     {
-        moveDirection = orientation.forward * verticalInput + orientation.right * horizontalInput;
+        moveDirection = playerPrefab.forward * verticalInput + playerPrefab.right * horizontalInput;
         if (grounded)
         {
             rb.AddForce(moveDirection.normalized * (moveSpeed * 10f), ForceMode.Force);
