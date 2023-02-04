@@ -215,6 +215,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 4447069128981350583, guid: a7a532dd1b0bd4c509b4bde229ee15a2, type: 3}
+      propertyPath: ItemName
+      value: Coin
+      objectReference: {fileID: 0}
     - target: {fileID: 8110124414639368459, guid: a7a532dd1b0bd4c509b4bde229ee15a2, type: 3}
       propertyPath: m_RootOrder
       value: 8
@@ -297,8 +301,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fc9f67d86fcc41a281e0f8e8dd987753, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ItemName: Uranus
   referenceItem: {fileID: 11400000, guid: 997b8dc5a5eff94deafe677b3a5656aa, type: 2}
   destroyOnPickup: 0
+  autoPickup: 1
+  rotationSpeed: 3
+  dropKey: 120
 --- !u!1001 &244367765
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -537,7 +545,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Algorithm: 0
   FullRandom: 0
-  RandomSeed: 213
+  RandomSeed: 533
   Floor: {fileID: 165842, guid: 8d3b36f175a633f429d7bda54c76550d, type: 3}
   Wall: {fileID: 1137399531443714967, guid: 3f012b036c1349e46afa22daff34ad2b, type: 3}
   Pillar: {fileID: 2302182548001512115, guid: 48f4e4e5ea5ea654895422b66771187c, type: 3}
@@ -545,7 +553,7 @@ MonoBehaviour:
   Columns: 50
   CellWidth: 4
   CellHeight: 4
-  AddGaps: 0
+  AddGaps: 1
   GoalPrefab: {fileID: 0}
 --- !u!4 &359721116
 Transform:

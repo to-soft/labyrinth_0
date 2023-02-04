@@ -3,12 +3,18 @@ using UnityEngine;
 
 public class ItemObject : MonoBehaviour
 {
+    public string ItemName;
     public InventoryItemData referenceItem;
     public bool destroyOnPickup = true;
+    public bool autoPickup = true;
+    
     private GameObject _player;
     private Transform _playerTransform;
-    private bool attachedToPlayer = false;
+    private bool _attachedToPlayer = false;
+    public float rotationSpeed = 0.5f;
     
+    public KeyCode dropKey = KeyCode.X;
+
     private void Awake()
     {
         _player = GameObject.FindGameObjectWithTag("Player");
@@ -20,9 +26,13 @@ public class ItemObject : MonoBehaviour
 
     private void Update()
     {
-        if (attachedToPlayer)
+        if (_attachedToPlayer)
         {
             FollowPlayer();
+        }
+        else
+        {
+            IdleSpin();
         }
     }
 
@@ -31,13 +41,15 @@ public class ItemObject : MonoBehaviour
         Debug.Log(other.gameObject.tag);
         if (other.gameObject.CompareTag("Player"))
         {
-            Debug.Log("Coin touched by player");
+            Debug.Log(ItemName + " touched by player");
             OnHandlePickupItem();
         }
     }
 
     public void FollowPlayer()
     {
+        // this sets the position and rotation of the object to match those of the player (also moves it up a bit)
+        // this might be better achieved by setting the object's Parent to the Player instance
         var o = gameObject;
         
         // set object to be in front of player and slightly above the ground
@@ -45,6 +57,26 @@ public class ItemObject : MonoBehaviour
         
         // set rotation to match player rotation
         o.transform.rotation = _playerTransform.rotation;
+        
+        // detect drop
+        if (Input.GetKey(dropKey))
+        {
+            OnDropItem();
+        }
+    }
+
+    public void OnDropItem()
+    {
+        Debug.Log(ItemName + " detached from player...");
+        var o = gameObject;
+        _attachedToPlayer = false;
+        o.transform.position = (_playerTransform.position + _playerTransform.forward * 1.75f);
+        o.transform.rotation = _playerTransform.rotation;
+    }
+
+    public void IdleSpin()
+    {
+        gameObject.transform.Rotate(new Vector3(0, rotationSpeed, 0));
     }
 
     public void OnHandlePickupItem()
@@ -58,7 +90,8 @@ public class ItemObject : MonoBehaviour
         }
         else
         {
-            attachedToPlayer = true;
+            Debug.Log(ItemName + " attached to player...");
+            _attachedToPlayer = true;
         }
     }
 }
