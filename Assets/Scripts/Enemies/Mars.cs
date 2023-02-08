@@ -17,15 +17,20 @@ public class Mars : MonoBehaviour
 
     private void Update()
     {
-
+        
     }
     
     private void OnTriggerEnter(Collider other)
     {
         Debug.Log(other.gameObject.tag);
-        if (other.gameObject.CompareTag("Player"))
+        if (other.gameObject.CompareTag("PlayerBody"))
         {
             Debug.Log(itemName + " touched by player");
+            GameObject playerBody = other.gameObject;
+            GameObject parent = playerBody.transform.parent.gameObject;
+            Player playerComponent = _player.gameObject.GetComponent<Player>();
+            playerComponent.Damage(5);
+
         }
     }
 

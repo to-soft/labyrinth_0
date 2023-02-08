@@ -17,7 +17,8 @@ public class ItemObject : MonoBehaviour
 
     private void Awake()
     {
-        _player = GameObject.FindGameObjectWithTag("Player");
+        Debug.Log("ItemObject Awake():");
+        _player = GameObject.FindGameObjectWithTag("PlayerBody");
         _playerTransform = _player.transform;
         Debug.Log("Player and transform:");
         Debug.Log(_player);
@@ -39,8 +40,9 @@ public class ItemObject : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         Debug.Log(other.gameObject.tag);
-        if (other.gameObject.CompareTag("Player"))
+        if (other.gameObject.CompareTag("PlayerBody"))
         {
+            
             Debug.Log(ItemName + " touched by player");
             OnHandlePickupItem();
         }
