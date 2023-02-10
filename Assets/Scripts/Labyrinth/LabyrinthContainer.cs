@@ -16,17 +16,24 @@ public abstract class LabyrinthContainer
         get { return mLabyrinthColumns; }
     }
 
+    public int StoryCount
+    {
+        get { return mLabyrinthStories; }
+    }
+
     private int mLabyrinthRows;
     private int mLabyrinthColumns;
-    private LabyrinthCell[,] mLabyrinth;
+    private int mLabyrinthStories;
+    private LabyrinthCell[,,] mLabyrinth;
     
     // constructor to make rows and columns non-zero
     // and instantiate a new LabyrinthCell at that coordinate point (rank & range)
 
-    public LabyrinthContainer(int rows, int columns)
+    public LabyrinthContainer(int rows, int columns, int stories)
     {
         mLabyrinthRows = Mathf.Abs(rows);
         mLabyrinthColumns = Mathf.Abs(columns);
+        mLabyrinthStories = Mathf.Abs(stories);
         
         if (mLabyrinthRows == 0)
         {
@@ -36,14 +43,21 @@ public abstract class LabyrinthContainer
         {
             mLabyrinthColumns = 1;
         }
-
-        mLabyrinth = new LabyrinthCell[rows, columns];
-
-        for (int row = 0; row < rows; row++)
+        if (mLabyrinthStories == 0)
         {
-            for (int column = 0; column < columns; column++)
+            mLabyrinthStories = 1;
+        }
+
+        mLabyrinth = new LabyrinthCell[rows, columns, stories];
+
+        for (int story = 0; story < stories; story++)
+        {
+            for (int row = 0; row < rows; row++)
             {
-                mLabyrinth[row, column] = new LabyrinthCell();
+                for (int column = 0; column < columns; column++)
+                {
+                    mLabyrinth[row, column, story] = new LabyrinthCell();
+                }
             }
         }
     }
@@ -52,16 +66,15 @@ public abstract class LabyrinthContainer
 
     public abstract void GenerateLabyrinth();
 
-    public LabyrinthCell GetLabyrinthCell(int row, int column)
+    public LabyrinthCell GetLabyrinthCell(int row, int column, int story)
     {
-        if (row >= 0 && column >= 0 && row < mLabyrinthRows && column < mLabyrinthColumns)
+        if (row >= 0 && column >= 0 && story >= 0 &&
+            row < mLabyrinthRows && column < mLabyrinthColumns && story < mLabyrinthStories)
         {
-            return mLabyrinth[row, column];
+            return mLabyrinth[row, column, story];
         }
-        else
-        {
-            Debug.Log(row + " " + column);
-            throw new System.ArgumentOutOfRangeException();
-        }
+
+        Debug.Log(row + " " + column + " " + story);
+        throw new System.ArgumentOutOfRangeException();
     }
 }
