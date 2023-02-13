@@ -121,6 +121,8 @@ public class LabyrinthGenerator : LabyrinthContainer
 
         } 
         while (movesAvailableCount > 0);
+
+        GetLabyrinthCell(0, 0, 0).WallBack = false;
         
     }
 }
