@@ -3,6 +3,7 @@ using System.Collections;
 
 public enum Direction
 {
+    Base,
     Start,
     Right,
     Front,
@@ -16,6 +17,10 @@ public class LabyrinthCell
 {
     public bool IsVisited = false;
     public bool IsGoal = false;
+    public bool RampRight = false;
+    public bool RampLeft = false;
+    public bool RampFront = false;
+    public bool RampBack = false;
     public bool WallRight = false;
     public bool WallFront = false;
     public bool WallLeft = false;

@@ -11,116 +11,134 @@ public class LabyrinthSpawner : MonoBehaviour
         PureRecursive
     }
 
-    public LabyrinthGenerationAlgorithm Algorithm = LabyrinthGenerationAlgorithm.PureRecursive;
-    public bool FullRandom = false;
-    public int RandomSeed = 12345;
-    public GameObject Floor = null;
-    public GameObject Wall = null;
-    public GameObject Pillar = null;
-    public int Rows = 5;
-    public int Columns = 5;
-    public int Stories = 5;
-    public float CellWidth = 4;
-    public float CellHeight = 4;
-    public float CellDepth = 4;
-    public bool Entrance = true;
-    public bool AddGaps = false;
-    public GameObject GoalPrefab = null;
+    public LabyrinthGenerationAlgorithm algorithm = LabyrinthGenerationAlgorithm.PureRecursive;
+    public bool fullRandom = false;
+    public int randomSeed = 12345;
+    public GameObject floor = null;
+    public GameObject wall = null;
+    public GameObject ceiling = null;
+    public GameObject rampRight = null;
+    public GameObject rampLeft = null;
+    public GameObject rampFront = null;
+    public GameObject rampBack = null;
+    public int rows = 5;
+    public int columns = 5;
+    public int stories = 5;
+    public float cellWidth = 3;
+    public float cellHeight = 3;
+    public float cellDepth = 3;
+    public bool entrance = true;
+    public GameObject goalPrefab = null;
 
     private LabyrinthContainer mLabyrinthContainer = null;
 
     // called before first frame update
     private void Start()
     {
-        if (!FullRandom)
+        if (!fullRandom)
         {
-            Random.InitState(RandomSeed);
+            Random.InitState(randomSeed);
         }
 
-        switch (Algorithm)
+        switch (algorithm)
         {
             case LabyrinthGenerationAlgorithm.PureRecursive:
-                mLabyrinthContainer = new LabyrinthGenerator(Rows, Columns, Stories);
+                mLabyrinthContainer = new LabyrinthGenerator(rows, columns, stories);
                 break;
         }
         
         mLabyrinthContainer.GenerateLabyrinth();
         
-        if (Entrance)
+        if (entrance)
         {
             mLabyrinthContainer.GetLabyrinthCell(0, 0, 0).WallBack = false;    
         }
         
 
-        for (int story = 0; story < Stories; story++)
+        for (int story = 0; story < stories; story++)
         {
-            for (int row = 0; row < Rows; row++)
+            for (int row = 0; row < rows; row++)
             {
-                for (int column = 0; column < Columns; column++)
+                for (int column = 0; column < columns; column++)
                 {
-                    float x = column * (CellWidth + (AddGaps ? .2f : 0));
-                    float z = row * (CellDepth + (AddGaps ? .2f : 0));
-                    float y = story * (CellHeight + (AddGaps ? .2f : 0));
+                    float x = column * (cellWidth);
+                    float y = story * (cellHeight);
+                    float z = row * (cellDepth);
                     LabyrinthCell cell = mLabyrinthContainer.GetLabyrinthCell(row, column, story);
-                    Debug.Log("Cell: " + x + " " + y + " " + z);
-                    Debug.Log("Cell walls: " + cell);
+                    Debug.Log("cell location: x" + column + ", y" + story + ", z" + row);
+                    Debug.Log("Cell: \nr:" + cell.WallRight + " \nl:" + cell.WallLeft + 
+                              " \nf:" + cell.WallFront + " \nb:" + cell.WallBack + " \nc:" + cell.Ceiling + 
+                              " \nvisited: " + cell.IsVisited);
                     GameObject tmp;
-                    // tmp = Instantiate(Floor, new Vector3(x, 0, z), Quaternion.Euler(0,0,0)) as GameObject;
-                    // tmp.transform.parent = transform;
 
                     if (cell.WallRight)
                     {
-                        tmp = Instantiate(Wall, new Vector3(x + CellWidth / 2, y, z) + Wall.transform.position, Quaternion.Euler(0, 90, 0)) as GameObject;
+                        tmp = Instantiate(wall, new Vector3(x + cellWidth / 2, y, z) + wall.transform.position, 
+                            Quaternion.Euler(0, 90, 0)) as GameObject;
                         tmp.transform.parent = transform;
                     }
                     if (cell.WallFront)
                     {
-                        tmp = Instantiate(Wall, new Vector3(x, y, z + CellDepth / 2) + Wall.transform.position, Quaternion.Euler(0, 0, 0)) as GameObject;
+                        tmp = Instantiate(wall, new Vector3(x, y, z + cellDepth / 2) + wall.transform.position, 
+                            Quaternion.Euler(0, 0, 0)) as GameObject;
                         tmp.transform.parent = transform;
                     }
                     if (cell.WallLeft)
                     {
-                        tmp = Instantiate(Wall, new Vector3(x - CellWidth / 2, y, z) + Wall.transform.position, Quaternion.Euler(0, 270, 0)) as GameObject;
+                        tmp = Instantiate(wall, new Vector3(x - cellWidth / 2, y, z) + wall.transform.position, 
+                            Quaternion.Euler(0, 270, 0)) as GameObject;
                         tmp.transform.parent = transform;
                     }
                     if (cell.WallBack)
                     {
-                        tmp = Instantiate(Wall, new Vector3(x, y, z - CellDepth / 2) + Wall.transform.position, Quaternion.Euler(0, 180, 0)) as GameObject;
+                        tmp = Instantiate(wall, new Vector3(x, y, z - cellDepth / 2) + wall.transform.position, 
+                            Quaternion.Euler(0, 180, 0)) as GameObject;
                         tmp.transform.parent = transform;
                     }
                     if (cell.Ceiling)
                     {
-                        tmp = Instantiate(Floor, new Vector3(x, y + CellHeight, z) + Floor.transform.position, Quaternion.Euler(0, 0, 0)) as GameObject;
+                        tmp = Instantiate(ceiling, new Vector3(x, y, z) + ceiling.transform.position, 
+                            Quaternion.Euler(0, 0, 0)) as GameObject;
                         tmp.transform.parent = transform;
                     }
                     if (cell.Floor)
                     {
-                        tmp = Instantiate(Floor, new Vector3(x, y, z) + Floor.transform.position, Quaternion.Euler(0, 0, 0)) as GameObject;
+                        tmp = Instantiate(floor, new Vector3(x, y, z) + floor.transform.position, 
+                            Quaternion.Euler(0, 0, 0)) as GameObject;
                         tmp.transform.parent = transform;
                     }
-
-                    if (cell.IsGoal && GoalPrefab != null)
+                    if (cell.RampFront)
                     {
-                        tmp = Instantiate(GoalPrefab, new Vector3(x, 1, z), Quaternion.Euler(0,0,0)) as GameObject;
+                        tmp = Instantiate(rampFront, new Vector3(x, y, z) + rampFront.transform.position, 
+                            Quaternion.Euler(315, 0, 0)) as GameObject;
                         tmp.transform.parent = transform;
                     }
+                    if (cell.RampBack)
+                    {
+                        tmp = Instantiate(rampBack, new Vector3(x, y, z) + rampBack.transform.position, 
+                            Quaternion.Euler(45, 0, 0)) as GameObject;
+                        tmp.transform.parent = transform;
+                    }
+                    if (cell.RampRight)
+                    {
+                        tmp = Instantiate(rampRight, new Vector3(x, y, z) + rampRight.transform.position, 
+                            Quaternion.Euler(0, 0, 45)) as GameObject;
+                        tmp.transform.parent = transform;
+                    }
+                    if (cell.RampLeft)
+                    {
+                        tmp = Instantiate(rampLeft, new Vector3(x, y, z) + rampLeft.transform.position, 
+                            Quaternion.Euler(0, 0, 315)) as GameObject;
+                        tmp.transform.parent = transform;
+                    }
+                    
+//                    if (cell.IsGoal && goalPrefab != null)
+//                    {
+//                        tmp = Instantiate(goalPrefab, new Vector3(x, 1, z), Quaternion.Euler(0,0,0)) as GameObject;
+//                        tmp.transform.parent = transform;
+//                    }
                 }
             }
         }
-
-        if (Pillar != null)
-        {
-            for (int row = 0; row < Rows + 1; row++)
-            {
-                for (int column = 0; column < Columns + 1; column++)
-                {
-                    float x = column * (CellWidth + (AddGaps ? .2f : 0));
-                    float z = row * (CellHeight + (AddGaps ? .2f : 0));
-                    GameObject tmp = Instantiate(Pillar, new Vector3(x - CellWidth / 2, 0, z - CellHeight / 2), Pillar.transform.rotation) as GameObject;
-                    tmp.transform.parent = transform;
-                }
-            }
-        }
-        
     }
 }
