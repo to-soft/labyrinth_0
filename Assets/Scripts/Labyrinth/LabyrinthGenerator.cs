@@ -12,21 +12,21 @@ public class LabyrinthGenerator : LabyrinthContainer
     public override void GenerateLabyrinth()
     {
         VisitCell(0, 0, 0, 
-            Direction.Start, GetLabyrinthCell(0, 0, 0), Direction.Start);
+            Direction.Start, GetLabyrinthCell(0, 0, 0), Direction.Base);
     }
 
-    private bool CanAscend(int row, int column, Direction direction)
+    private bool CanAscend(int row, int column, int story, Direction direction)
     {
         switch (direction)
         {
             case Direction.Front:
-                return row + 1 < RowCount;
+                return row + 1 < RowCount && !GetLabyrinthCell(row + 1, column, story).IsVisited;
             case Direction.Back:
-                return row > 0;
+                return row > 0 && !GetLabyrinthCell(row - 1, column, story).IsVisited;;
             case Direction.Right:
-                return column + 1 < ColumnCount;
+                return column + 1 < ColumnCount && !GetLabyrinthCell(row, column + 1, story).IsVisited;
             case Direction.Left:
-                return column > 0;
+                return column > 0 && !GetLabyrinthCell(row, column - 1, story).IsVisited;
             default:
                 return false;
         }
@@ -37,40 +37,76 @@ public class LabyrinthGenerator : LabyrinthContainer
     {
         Direction[] movesAvailable = new Direction[6];
         int movesAvailableCount = 0;
-        bool createRamp = moveMade == Direction.Up && prevCell is not null;
+        bool createRamp = moveMade is Direction.Up or Direction.Down && prevCell is not null;
         LabyrinthCell thisCell = GetLabyrinthCell(row, column, story);
 
         if (createRamp)
         {
             // has to go same direction as last iteration's moveMade (this iteration's prevModeMade)
             prevCell.Floor = thisCell.Floor = false;
+            if (thisCell.IsVisited)
+            {
+                Debug.Log("Arrived at visited cell after going up or down...");
+            }
             thisCell.IsVisited = true;
             switch (prevMoveMade)
             {
                 case Direction.Start:
                     break;
                 case Direction.Right:
-                    prevCell.RampRight = thisCell.Ceiling =
-                        GetLabyrinthCell(row, column + 1, story).Floor =
-                            thisCell.WallBack = thisCell.WallLeft = thisCell.WallFront = true;
+                    if (moveMade == Direction.Up)
+                    {
+                        prevCell.RampRight = prevCell.WallBack = prevCell.WallFront =
+                            thisCell.WallBack = thisCell.WallLeft = thisCell.WallFront = thisCell.Ceiling = true;
+                    }
+                    else
+                    {
+                        prevCell.WallFront = prevCell.WallRight = prevCell.WallBack = prevCell.Ceiling =
+                            thisCell.WallBack = thisCell.WallFront = thisCell.RampLeft = true;
+
+                    }
                     VisitCell(row, column + 1, story, Direction.Right, thisCell, moveMade);
                     break;
                 case Direction.Front:
-                    prevCell.RampFront = thisCell.Ceiling = 
-                        GetLabyrinthCell(row + 1, column, story).Floor =
-                            thisCell.WallBack = thisCell.WallLeft = thisCell.WallRight = true;
+                    if (moveMade == Direction.Up)
+                    {
+                        prevCell.RampFront = prevCell.WallLeft = prevCell.WallRight =
+                            thisCell.WallBack = thisCell.WallLeft = thisCell.WallRight = thisCell.Ceiling = true;
+                    }
+                    else
+                    {
+                        prevCell.WallFront = prevCell.WallRight = prevCell.WallLeft = prevCell.Ceiling =
+                            thisCell.WallLeft = thisCell.WallRight = thisCell.RampBack = true;
+
+                    }
                     VisitCell(row + 1, column, story, Direction.Front, thisCell, moveMade);
                     break;
                 case Direction.Left:
-                    prevCell.RampLeft = thisCell.Ceiling = 
-                        GetLabyrinthCell(row, column - 1, story).Floor =
-                            thisCell.WallBack = thisCell.WallFront = thisCell.WallRight = true;
+                    if (moveMade == Direction.Up)
+                    {
+                        prevCell.RampLeft = prevCell.WallFront = prevCell.WallBack =
+                            thisCell.WallBack = thisCell.WallFront = thisCell.WallRight = thisCell.Ceiling = true;
+                    }
+                    else
+                    {
+                        prevCell.WallFront = prevCell.WallBack = prevCell.WallLeft = prevCell.Ceiling =
+                            thisCell.WallBack = thisCell.WallFront = thisCell.RampRight = true;
+
+                    }
                     VisitCell(row, column - 1, story, Direction.Left, thisCell, moveMade);
                     break;
                 case Direction.Back:
-                    prevCell.RampBack = thisCell.Ceiling = 
-                        GetLabyrinthCell(row - 1, column, story).Floor =
-                            thisCell.WallFront = thisCell.WallLeft = thisCell.WallRight = true;
+                    if (moveMade == Direction.Up)
+                    {
+                        prevCell.RampBack = prevCell.WallLeft = prevCell.WallRight =
+                            thisCell.WallLeft = thisCell.WallRight = thisCell.WallFront = thisCell.Ceiling = true;
+                    }
+                    else
+                    {
+                        prevCell.WallRight = prevCell.WallBack = prevCell.WallLeft = prevCell.Ceiling =
+                            thisCell.WallLeft = thisCell.WallRight = thisCell.RampFront = true;
+
+                    }
                     VisitCell(row - 1, column, story, Direction.Back, thisCell, moveMade);
                     break;
             }
@@ -129,33 +165,29 @@ public class LabyrinthGenerator : LabyrinthContainer
                 // check up
                 if (story + 1 < StoryCount
                     && !GetLabyrinthCell(row, column, story + 1).IsVisited
-                    && CanAscend(row, column, moveMade))
+                    && CanAscend(row, column, story, moveMade))
                 {
+                    Debug.Log("can go up...");
                     movesAvailable[movesAvailableCount] = Direction.Up;
                     movesAvailableCount++;
                 }
                 else if (!thisCell.IsVisited && moveMade != Direction.Down)
                 {
                     thisCell.Ceiling = true;
-                    if (story + 1 < StoryCount)
-                    {
-                        GetLabyrinthCell(row, column, story + 1).Floor = true;
-                    }
                 }
 
                 // check down
-                if (story >= 1 && !GetLabyrinthCell(row, column, story - 1).IsVisited)
+                if (story >= 1 
+                    && !GetLabyrinthCell(row, column, story - 1).IsVisited 
+                    && CanAscend(row, column, story, moveMade))
                 {
+                    Debug.Log("can go down...");
                     movesAvailable[movesAvailableCount] = Direction.Down;
                     movesAvailableCount++;
                 }
                 else if (!thisCell.IsVisited && moveMade != Direction.Up)
                 {
                     thisCell.Floor = true;
-                    if (story > 0)
-                    {
-                        GetLabyrinthCell(row, column, story - 1).Ceiling = true;
-                    }
                 }
 
                 thisCell.IsVisited = true;
@@ -180,6 +212,7 @@ public class LabyrinthGenerator : LabyrinthContainer
                             break;
                         case Direction.Up:
                             thisCell.Ceiling = false;
+                            Debug.Log("Trying to go up...");
                             VisitCell(row, column, story + 1, Direction.Up, thisCell, moveMade);
                             break;
                         case Direction.Down:

@@ -664,9 +664,9 @@ MonoBehaviour:
   rampLeft: {fileID: 6974287730147692455, guid: 30654b373aec64db69ce32856104504e, type: 3}
   rampFront: {fileID: 5165582200413100050, guid: 5e6297884890a4af499e671582c7a2e1, type: 3}
   rampBack: {fileID: 8376805203762379046, guid: ec3ab875e17024acc8392fbafd3a6bac, type: 3}
-  rows: 9
-  columns: 7
-  stories: 4
+  rows: 5
+  columns: 5
+  stories: 3
   cellWidth: 3
   cellHeight: 3
   cellDepth: 3
