@@ -15,39 +15,49 @@ public class LabyrinthGenerator : LabyrinthContainer
             Direction.Start, GetLabyrinthCell(0, 0, 0), Direction.Base);
     }
 
-    private bool CanAscend(int row, int column, int story, Direction direction)
+    private bool CanAscend(int row, int column, int story, Direction direction, Direction directionVertical)
     {
-        switch (direction)
+        if (direction is Direction.Up or Direction.Down) { return false; }
+        int neighborStory = directionVertical == Direction.Up ? story + 1 : story - 1;
+        // bool canAscend = false;
+        // switch (direction)
+        // {
+        //     case Direction.Right:
+        //         if (column + 1 < ColumnCount)
+        //         {
+        //             
+        //         }
+        // }
+        if (row == 0 || row + 1 == RowCount || column == 0 || column + 1 == ColumnCount)
         {
-            case Direction.Front:
-                return row + 1 < RowCount && !GetLabyrinthCell(row + 1, column, story).IsVisited;
-            case Direction.Back:
-                return row > 0 && !GetLabyrinthCell(row - 1, column, story).IsVisited;;
-            case Direction.Right:
-                return column + 1 < ColumnCount && !GetLabyrinthCell(row, column + 1, story).IsVisited;
-            case Direction.Left:
-                return column > 0 && !GetLabyrinthCell(row, column - 1, story).IsVisited;
-            default:
-                return false;
+            Debug.Log("at edge");
+            Debug.Log("attempted cell is x" + column + ", y" + story + ", z" + row);
+            return false;
         }
+        
+        return (direction == Direction.Back || !GetLabyrinthCell(row + 1, column, story).IsVisited)
+               && (direction == Direction.Front || !GetLabyrinthCell(row - 1, column, story).IsVisited)
+               && (direction == Direction.Left || !GetLabyrinthCell(row, column + 1, story).IsVisited)
+               && (direction == Direction.Right || !GetLabyrinthCell(row, column - 1, story).IsVisited)
+               && !GetLabyrinthCell(row + 1, column, neighborStory).IsVisited
+               && !GetLabyrinthCell(row - 1, column, neighborStory).IsVisited
+               && !GetLabyrinthCell(row, column + 1, neighborStory).IsVisited
+               && !GetLabyrinthCell(row, column - 1, neighborStory).IsVisited;
     }
 
     private void VisitCell(int row, int column, int story, 
         Direction moveMade, LabyrinthCell prevCell = null, Direction prevMoveMade = Direction.Base)
     {
-        Direction[] movesAvailable = new Direction[6];
+        Debug.Log("this cell is x" + column + ", y" + story + ", z" + row + "\n moved: " + moveMade);
         int movesAvailableCount = 0;
         bool createRamp = moveMade is Direction.Up or Direction.Down && prevCell is not null;
         LabyrinthCell thisCell = GetLabyrinthCell(row, column, story);
-
+        Direction[] movesAvailable = new Direction[6];
+        
         if (createRamp)
         {
             // has to go same direction as last iteration's moveMade (this iteration's prevModeMade)
             prevCell.Floor = thisCell.Floor = false;
-            if (thisCell.IsVisited)
-            {
-                Debug.Log("Arrived at visited cell after going up or down...");
-            }
             thisCell.IsVisited = true;
             switch (prevMoveMade)
             {
@@ -165,7 +175,7 @@ public class LabyrinthGenerator : LabyrinthContainer
                 // check up
                 if (story + 1 < StoryCount
                     && !GetLabyrinthCell(row, column, story + 1).IsVisited
-                    && CanAscend(row, column, story, moveMade))
+                    && CanAscend(row, column, story, moveMade, Direction.Up))
                 {
                     Debug.Log("can go up...");
                     movesAvailable[movesAvailableCount] = Direction.Up;
@@ -179,7 +189,7 @@ public class LabyrinthGenerator : LabyrinthContainer
                 // check down
                 if (story >= 1 
                     && !GetLabyrinthCell(row, column, story - 1).IsVisited 
-                    && CanAscend(row, column, story, moveMade))
+                    && CanAscend(row, column, story, moveMade, Direction.Down))
                 {
                     Debug.Log("can go down...");
                     movesAvailable[movesAvailableCount] = Direction.Down;
@@ -189,8 +199,10 @@ public class LabyrinthGenerator : LabyrinthContainer
                 {
                     thisCell.Floor = true;
                 }
-
+            
                 thisCell.IsVisited = true;
+                
+                Debug.Log("moves available: " + movesAvailableCount);
 
                 if (movesAvailableCount > 0)
                 {

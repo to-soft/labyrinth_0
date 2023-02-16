@@ -74,7 +74,7 @@ public abstract class LabyrinthContainer
             return mLabyrinth[row, column, story];
         }
 
-        Debug.Log(row + " " + column + " " + story);
+        Debug.Log("x" + column + ", y" + story + ", z" + row);
         throw new System.ArgumentOutOfRangeException();
     }
 }
