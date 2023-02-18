@@ -21,6 +21,7 @@ public class LabyrinthSpawner : MonoBehaviour
     public GameObject rampLeft = null;
     public GameObject rampFront = null;
     public GameObject rampBack = null;
+    public GameObject Door = null;
     public int rows = 5;
     public int columns = 5;
     public int stories = 5;
@@ -131,7 +132,13 @@ public class LabyrinthSpawner : MonoBehaviour
                             Quaternion.Euler(0, 0, 315)) as GameObject;
                         tmp.transform.parent = transform;
                     }
-                    
+
+                    if (cell.Door)
+                    {
+                        tmp = Instantiate(Door, new Vector3(x, y, z) + Door.transform.position,
+                            Quaternion.Euler(0, 0, 0));
+                        tmp.transform.parent = transform;
+                    }
 //                    if (cell.IsGoal && goalPrefab != null)
 //                    {
 //                        tmp = Instantiate(goalPrefab, new Vector3(x, 1, z), Quaternion.Euler(0,0,0)) as GameObject;

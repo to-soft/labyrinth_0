@@ -27,4 +27,5 @@ public class LabyrinthCell
     public bool WallBack = false;
     public bool Ceiling = false;
     public bool Floor = false;
+    public bool Door = false;
 }

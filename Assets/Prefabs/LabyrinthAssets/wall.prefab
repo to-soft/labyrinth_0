@@ -103,7 +103,7 @@ PrefabInstance:
     - target: {fileID: -7511558181221131132, guid: 1ec51b290642e4f369bffd9f67bc5f58, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
-      objectReference: {fileID: 2100000, guid: 8ee3687d80298461aafd6e85d6db9bf8, type: 2}
+      objectReference: {fileID: 2100000, guid: 4f9c227e6e254848f863f10556766b5c, type: 2}
     - target: {fileID: -7511558181221131132, guid: 1ec51b290642e4f369bffd9f67bc5f58, type: 3}
       propertyPath: 'm_Materials.Array.data[1]'
       value: 
@@ -149,7 +149,7 @@ BoxCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
