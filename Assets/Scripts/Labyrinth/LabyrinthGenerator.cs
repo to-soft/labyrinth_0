@@ -13,27 +13,55 @@ public class LabyrinthGenerator : LabyrinthContainer
     {
         VisitCell(0, 0, 0, 
             Direction.Start, GetLabyrinthCell(0, 0, 0), Direction.Base);
+        StudyLabyrinth();
+    }
+
+    private void StudyLabyrinth()
+    {
+        List<LabyrinthCell> unvisitedCells = new List<LabyrinthCell>();
+        List<LabyrinthCell> clippedCells = new List<LabyrinthCell>();
+        for (int story = 0; story < StoryCount; story++)
+        {
+            for (int row = 0; row < RowCount; row++)
+            {
+                for (int column = 0; column < ColumnCount; column++)
+                {
+                    LabyrinthCell cell = GetLabyrinthCell(row, column, story);
+                    if (!cell.IsVisited)
+                    {
+                        Debug.Log($"Found unvisited cell: (story: {story}, col: {column}, row: {row})");
+                        unvisitedCells.Add(cell);
+                    }
+
+                    if (cell.WallFront && row + 1 < RowCount) 
+                    {
+                        GetLabyrinthCell(row + 1, column, story).WallBack = false;
+                    }
+                    if (cell.WallRight && column + 1 < ColumnCount) 
+                    {
+                        GetLabyrinthCell(row, column + 1, story).WallLeft = false;
+                    }
+
+                    if (cell.Ceiling && story + 1 < StoryCount)
+                    {
+                        LabyrinthCell above = GetLabyrinthCell(row, column, story + 1);
+                        above.Floor = false;
+                        if (above.RampFront || above.RampBack || above.RampRight || above.RampLeft)
+                        {
+                            cell.Ceiling = false;
+                        }
+                    }
+                }
+            }
+        }
+        Debug.Log($"Total number of unvisited cells found: {unvisitedCells.Count}");
     }
 
     private bool CanAscend(int row, int column, int story, Direction direction, Direction directionVertical)
     {
         if (direction is Direction.Up or Direction.Down) { return false; }
         int neighborStory = directionVertical == Direction.Up ? story + 1 : story - 1;
-        // bool canAscend = false;
-        // switch (direction)
-        // {
-        //     case Direction.Right:
-        //         if (column + 1 < ColumnCount)
-        //         {
-        //             
-        //         }
-        // }
-        if (row == 0 || row + 1 == RowCount || column == 0 || column + 1 == ColumnCount)
-        {
-            Debug.Log("at edge");
-            Debug.Log("attempted cell is x" + column + ", y" + story + ", z" + row);
-            return false;
-        }
+        if (row == 0 || row + 1 == RowCount || column == 0 || column + 1 == ColumnCount) { return false; }
         
         return (direction == Direction.Back || !GetLabyrinthCell(row + 1, column, story).IsVisited)
                && (direction == Direction.Front || !GetLabyrinthCell(row - 1, column, story).IsVisited)
@@ -57,7 +85,7 @@ public class LabyrinthGenerator : LabyrinthContainer
         if (createRamp)
         {
             // has to go same direction as last iteration's moveMade (this iteration's prevModeMade)
-            prevCell.Floor = thisCell.Floor = false;
+            thisCell.Floor = prevCell.Floor = story == 0;
             thisCell.IsVisited = true;
             switch (prevMoveMade)
             {
@@ -68,11 +96,13 @@ public class LabyrinthGenerator : LabyrinthContainer
                     {
                         prevCell.RampRight = prevCell.WallBack = prevCell.WallFront =
                             thisCell.WallBack = thisCell.WallLeft = thisCell.WallFront = thisCell.Ceiling = true;
+                        prevCell.WallRight = false;
                     }
                     else
                     {
                         prevCell.WallFront = prevCell.WallRight = prevCell.WallBack = prevCell.Ceiling =
                             thisCell.WallBack = thisCell.WallFront = thisCell.RampLeft = true;
+                        thisCell.WallLeft = false;
 
                     }
                     VisitCell(row, column + 1, story, Direction.Right, thisCell, moveMade);
@@ -82,11 +112,13 @@ public class LabyrinthGenerator : LabyrinthContainer
                     {
                         prevCell.RampFront = prevCell.WallLeft = prevCell.WallRight =
                             thisCell.WallBack = thisCell.WallLeft = thisCell.WallRight = thisCell.Ceiling = true;
+                        prevCell.WallFront = false;
                     }
                     else
                     {
                         prevCell.WallFront = prevCell.WallRight = prevCell.WallLeft = prevCell.Ceiling =
                             thisCell.WallLeft = thisCell.WallRight = thisCell.RampBack = true;
+                        thisCell.WallBack = false;
 
                     }
                     VisitCell(row + 1, column, story, Direction.Front, thisCell, moveMade);
@@ -96,11 +128,13 @@ public class LabyrinthGenerator : LabyrinthContainer
                     {
                         prevCell.RampLeft = prevCell.WallFront = prevCell.WallBack =
                             thisCell.WallBack = thisCell.WallFront = thisCell.WallRight = thisCell.Ceiling = true;
+                        prevCell.WallLeft = false;
                     }
                     else
                     {
                         prevCell.WallFront = prevCell.WallBack = prevCell.WallLeft = prevCell.Ceiling =
                             thisCell.WallBack = thisCell.WallFront = thisCell.RampRight = true;
+                        thisCell.WallRight = false;
 
                     }
                     VisitCell(row, column - 1, story, Direction.Left, thisCell, moveMade);
@@ -110,11 +144,13 @@ public class LabyrinthGenerator : LabyrinthContainer
                     {
                         prevCell.RampBack = prevCell.WallLeft = prevCell.WallRight =
                             thisCell.WallLeft = thisCell.WallRight = thisCell.WallFront = thisCell.Ceiling = true;
+                        prevCell.WallBack = false;
                     }
                     else
                     {
                         prevCell.WallRight = prevCell.WallBack = prevCell.WallLeft = prevCell.Ceiling =
                             thisCell.WallLeft = thisCell.WallRight = thisCell.RampFront = true;
+                        thisCell.WallFront = false;
 
                     }
                     VisitCell(row - 1, column, story, Direction.Back, thisCell, moveMade);
@@ -195,7 +231,7 @@ public class LabyrinthGenerator : LabyrinthContainer
                     movesAvailable[movesAvailableCount] = Direction.Down;
                     movesAvailableCount++;
                 }
-                else if (!thisCell.IsVisited && moveMade != Direction.Up)
+                else if ((!thisCell.IsVisited && moveMade != Direction.Up) || story == 0)
                 {
                     thisCell.Floor = true;
                 }

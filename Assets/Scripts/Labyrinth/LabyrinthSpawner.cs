@@ -15,7 +15,7 @@ public class LabyrinthSpawner : MonoBehaviour
     public bool fullRandom = false;
     public int randomSeed = 12345;
     public GameObject floor = null;
-    public GameObject wall = null;
+    public Wall wall = null;
     public GameObject ceiling = null;
     public GameObject rampRight = null;
     public GameObject rampLeft = null;
@@ -70,32 +70,12 @@ public class LabyrinthSpawner : MonoBehaviour
                     Debug.Log("Cell: \nr:" + cell.WallRight + " \nl:" + cell.WallLeft + 
                               " \nf:" + cell.WallFront + " \nb:" + cell.WallBack + " \nc:" + cell.Ceiling + 
                               " \nvisited: " + cell.IsVisited);
+                    bool noTorches = false;
+                    Wall w;
                     GameObject tmp;
+                    Vector3 _v = new Vector3();
+                    Quaternion _q = Quaternion.Euler(0, 0, 0);
 
-                    if (cell.WallRight)
-                    {
-                        tmp = Instantiate(wall, new Vector3(x + cellWidth / 2, y, z) + wall.transform.position, 
-                            Quaternion.Euler(0, 90, 0)) as GameObject;
-                        tmp.transform.parent = transform;
-                    }
-                    if (cell.WallFront)
-                    {
-                        tmp = Instantiate(wall, new Vector3(x, y, z + cellDepth / 2) + wall.transform.position, 
-                            Quaternion.Euler(0, 0, 0)) as GameObject;
-                        tmp.transform.parent = transform;
-                    }
-                    if (cell.WallLeft)
-                    {
-                        tmp = Instantiate(wall, new Vector3(x - cellWidth / 2, y, z) + wall.transform.position, 
-                            Quaternion.Euler(0, 270, 0)) as GameObject;
-                        tmp.transform.parent = transform;
-                    }
-                    if (cell.WallBack)
-                    {
-                        tmp = Instantiate(wall, new Vector3(x, y, z - cellDepth / 2) + wall.transform.position, 
-                            Quaternion.Euler(0, 180, 0)) as GameObject;
-                        tmp.transform.parent = transform;
-                    }
                     if (cell.Ceiling)
                     {
                         tmp = Instantiate(ceiling, new Vector3(x, y, z) + ceiling.transform.position, 
@@ -113,24 +93,52 @@ public class LabyrinthSpawner : MonoBehaviour
                         tmp = Instantiate(rampFront, new Vector3(x, y, z) + rampFront.transform.position, 
                             Quaternion.Euler(315, 0, 0)) as GameObject;
                         tmp.transform.parent = transform;
+                        noTorches = true;
                     }
                     if (cell.RampBack)
                     {
                         tmp = Instantiate(rampBack, new Vector3(x, y, z) + rampBack.transform.position, 
                             Quaternion.Euler(45, 0, 0)) as GameObject;
                         tmp.transform.parent = transform;
+                        noTorches = true;
                     }
                     if (cell.RampRight)
                     {
                         tmp = Instantiate(rampRight, new Vector3(x, y, z) + rampRight.transform.position, 
                             Quaternion.Euler(0, 0, 45)) as GameObject;
                         tmp.transform.parent = transform;
+                        noTorches = true;
                     }
                     if (cell.RampLeft)
                     {
                         tmp = Instantiate(rampLeft, new Vector3(x, y, z) + rampLeft.transform.position, 
                             Quaternion.Euler(0, 0, 315)) as GameObject;
                         tmp.transform.parent = transform;
+                        noTorches = true;
+                    }
+                    if (cell.WallRight)
+                    {
+                        w = Instantiate(wall, _v, _q) as Wall;
+                        w.InitializeWall(Orientation.Right, x, y, z, noTorches);
+                        w.transform.parent = transform;
+                    }
+                    if (cell.WallFront)
+                    {
+                        w = Instantiate(wall, _v, _q) as Wall;
+                        w.InitializeWall(Orientation.Front, x, y, z, noTorches);
+                        w.transform.parent = transform;
+                    }
+                    if (cell.WallLeft)
+                    {
+                        w = Instantiate(wall, _v, _q) as Wall;
+                        w.InitializeWall(Orientation.Left, x, y, z, noTorches);
+                        w.transform.parent = transform;
+                    }
+                    if (cell.WallBack)
+                    {
+                        w = Instantiate(wall, _v, _q) as Wall;
+                        w.InitializeWall(Orientation.Back, x, y, z, noTorches);
+                        w.transform.parent = transform;
                     }
 
                     if (cell.Door)
@@ -139,11 +147,6 @@ public class LabyrinthSpawner : MonoBehaviour
                             Quaternion.Euler(0, 0, 0));
                         tmp.transform.parent = transform;
                     }
-//                    if (cell.IsGoal && goalPrefab != null)
-//                    {
-//                        tmp = Instantiate(goalPrefab, new Vector3(x, 1, z), Quaternion.Euler(0,0,0)) as GameObject;
-//                        tmp.transform.parent = transform;
-//                    }
                 }
             }
         }
