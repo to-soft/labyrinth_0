@@ -56,15 +56,30 @@ public class LabyrinthGenerator : LabyrinthContainer
         }
     }
 
-    private bool CanAscend(int row, int column, int story, Direction direction, Direction directionVertical)
+    private bool CanAscendOrDescend(int row, int column, int story, Direction direction, Direction directionVertical)
     {
+        Debug.Log("checking can asc/desc...");
         if (direction is Direction.Up or Direction.Down) { return false; }
-
-        int mappedDirection = directionVertical == Direction.Up ? 1 : -1;
-        int neighborStory = story + mappedDirection;
-        bool neighborAtEdge = neighborStory == 0 || neighborStory + 1 == StoryCount;
-        if (row == 0 || row + 1 == RowCount || column == 0 || column + 1 == ColumnCount) { return false; }
         
+        Debug.Log($"attempting to move: {direction} and {directionVertical}");
+        
+        Debug.Log($"starting coordinates:\nstory {story}\nrow {row}\ncolumn: {column}");
+
+        int targetStory = story + (directionVertical == Direction.Up ? 1 : -1);
+        int targetColumn = column + (direction == Direction.Right ? 1 : direction == Direction.Left ? -1 : 0);
+        int targetRow = row + (direction == Direction.Front ? 1 : direction == Direction.Back ? -1 : 0);
+        Debug.Log($"target coordinates:\nstory {targetStory}\nrow {targetRow}\ncolumn: {targetColumn}");
+        
+        if (targetStory < 0 || targetStory == StoryCount) { return false; }
+        if (targetColumn < 0 || targetColumn == ColumnCount) { return false; }
+        if (targetRow < 0 || targetRow == RowCount) { return false; }
+        
+        return !GetLabyrinthCell(targetRow, targetColumn, targetStory).IsVisited 
+                && !GetLabyrinthCell(row, column, targetStory).IsVisited;
+        
+        // bool neighborAtEdge = targetStory == 0 || targetStory + 1 == StoryCount;
+        // if (row == 0 || row + 1 == RowCount || column == 0 || column + 1 == ColumnCount) { return false; }
+
         //check cells adjacent to target + 1 in horizontal direction
         // switch (direction)
         // {
@@ -93,44 +108,44 @@ public class LabyrinthGenerator : LabyrinthContainer
         //         if (!neighborAtEdge 
         //             && GetLabyrinthCell(row - 1, column, neighborStory + mappedDirection).IsVisited) { return false; }
         //         break;
-        // }
+        // }Log
 
         //check cell above/below current and target cells
-        if (directionVertical == Direction.Up && neighborStory + 1 < StoryCount)
-        {
-            if (GetLabyrinthCell(row, column, neighborStory + 1).IsVisited) { return false; }
+        // if (directionVertical == Direction.Up && targetStory + 1 < StoryCount)
+        // {
+        //     if (GetLabyrinthCell(row, column, targetStory + 1).IsVisited) { return false; }
+        //
+        //     if (story > 0)
+        //     {
+        //         if (GetLabyrinthCell(row, column, story - 1).IsVisited) { return false; }
+        //     }
+        // }
+        // if (directionVertical == Direction.Down && story + 1 < StoryCount)
+        // {
+        //     if (GetLabyrinthCell(row, column, story + 1).IsVisited) { return false; }
+        //
+        //     if (targetStory > 0)
+        //     {
+        //         if (GetLabyrinthCell(row, column, targetStory - 1).IsVisited) { return false; }
+        //     }   
+        // }
 
-            if (story > 0)
-            {
-                if (GetLabyrinthCell(row, column, story - 1).IsVisited) { return false; }
-            }
-        }
-        if (directionVertical == Direction.Down && story + 1 < StoryCount)
-        {
-            if (GetLabyrinthCell(row, column, story + 1).IsVisited) { return false; }
-
-            if (neighborStory > 0)
-            {
-                if (GetLabyrinthCell(row, column, neighborStory - 1).IsVisited) { return false; }
-            }   
-        }
-
-        return // adjacent cells
-            (direction == Direction.Back || !GetLabyrinthCell(row + 1, column, story).IsVisited)
-            && (direction == Direction.Front || !GetLabyrinthCell(row - 1, column, story).IsVisited)
-            && (direction == Direction.Left || !GetLabyrinthCell(row, column + 1, story).IsVisited)
-            && (direction == Direction.Right || !GetLabyrinthCell(row, column - 1, story).IsVisited)
-            // adjacent cells of target cell
-            && !GetLabyrinthCell(row + 1, column, neighborStory).IsVisited
-            && !GetLabyrinthCell(row - 1, column, neighborStory).IsVisited
-            && !GetLabyrinthCell(row, column + 1, neighborStory).IsVisited
-            && !GetLabyrinthCell(row, column - 1, neighborStory).IsVisited;
+        // return // adjacent cells
+        //     (direction == Direction.Back || !GetLabyrinthCell(row + 1, column, story).IsVisited)
+        //     && (direction == Direction.Front || !GetLabyrinthCell(row - 1, column, story).IsVisited)
+        //     && (direction == Direction.Left || !GetLabyrinthCell(row, column + 1, story).IsVisited)
+        //     && (direction == Direction.Right || !GetLabyrinthCell(row, column - 1, story).IsVisited)
+        //     // adjacent cells of target cell
+        //     && !GetLabyrinthCell(row + 1, column, targetStory).IsVisited
+        //     && !GetLabyrinthCell(row - 1, column, targetStory).IsVisited
+        //     && !GetLabyrinthCell(row, column + 1, targetStory).IsVisited
+        //     && !GetLabyrinthCell(row, column - 1, targetStory).IsVisited;
     }
 
     private void VisitCell(int row, int column, int story, 
         Direction moveMade, LabyrinthCell prevCell = null, Direction prevMoveMade = Direction.Base)
     {
-        // Debug.Log("this cell is x" + column + ", y" + story + ", z" + row + "\n moved: " + moveMade);
+        Debug.Log("this cell is x" + column + ", y" + story + ", z" + row + "\n moved: " + moveMade);
         int movesAvailableCount = 0;
         bool createRamp = moveMade is Direction.Up or Direction.Down && prevCell is not null;
         LabyrinthCell thisCell = GetLabyrinthCell(row, column, story);
@@ -263,11 +278,9 @@ public class LabyrinthGenerator : LabyrinthContainer
                 }
 
                 // check up
-                if (story + 1 < StoryCount
-                    && !GetLabyrinthCell(row, column, story + 1).IsVisited
-                    && CanAscend(row, column, story, moveMade, Direction.Up))
+                if (CanAscendOrDescend(row, column, story, moveMade, Direction.Up))
                 {
-                    // Debug.Log("can go up...");
+                    Debug.Log("can ascend...");
                     movesAvailable[movesAvailableCount] = Direction.Up;
                     movesAvailableCount++;
                 }
@@ -277,11 +290,9 @@ public class LabyrinthGenerator : LabyrinthContainer
                 }
 
                 // check down
-                if (story >= 1 
-                    && !GetLabyrinthCell(row, column, story - 1).IsVisited 
-                    && CanAscend(row, column, story, moveMade, Direction.Down))
+                if (CanAscendOrDescend(row, column, story, moveMade, Direction.Down))
                 {
-                    // Debug.Log("can go down...");
+                    Debug.Log("can descend...");
                     movesAvailable[movesAvailableCount] = Direction.Down;
                     movesAvailableCount++;
                 }
