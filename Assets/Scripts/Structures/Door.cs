@@ -26,12 +26,15 @@ public class Door : MonoBehaviour
         lowerDoor = lowerDoorObject.gameObject.GetComponent<Rigidbody>();
         upperDoor = upperDoorObject.gameObject.GetComponent<Rigidbody>();
         
+        upperDoorClosedRotation = upperDoor.transform.rotation;
+        upperDoorOpenRotation = upperDoorClosedRotation * Quaternion.Euler(0, -90, 0);
         lowerDoorClosedPosition = lowerDoor.transform.position;
         lowerDoorClosedRotation = lowerDoor.transform.rotation;
         lowerDoorOpenRotation = lowerDoorClosedRotation * Quaternion.Euler(0, -70, 0);
         lowerDoorOpenPosition = new Vector3(lowerDoor.position.x, -0.05f, lowerDoor.position.y);
-        upperDoorOpenRotation = upperDoorClosedRotation * Quaternion.Euler(0, -90, 0);
-        upperDoorClosedRotation = upperDoor.transform.rotation;
+        
+        Debug.Log($"upper door closed rotation: {upperDoorClosedRotation}");
+        Debug.Log($"upper door open rotation: {upperDoorOpenRotation}");
     }
 
     private void FixedUpdate()

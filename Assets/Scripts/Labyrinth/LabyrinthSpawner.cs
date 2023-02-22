@@ -66,10 +66,10 @@ public class LabyrinthSpawner : MonoBehaviour
                     float y = story * (cellHeight);
                     float z = row * (cellDepth);
                     LabyrinthCell cell = mLabyrinthContainer.GetLabyrinthCell(row, column, story);
-                    Debug.Log("cell location: x" + column + ", y" + story + ", z" + row);
-                    Debug.Log("Cell: \nr:" + cell.WallRight + " \nl:" + cell.WallLeft + 
-                              " \nf:" + cell.WallFront + " \nb:" + cell.WallBack + " \nc:" + cell.Ceiling + 
-                              " \nvisited: " + cell.IsVisited);
+                    // Debug.Log("cell location: x" + column + ", y" + story + ", z" + row);
+                    // Debug.Log("Cell: \nr:" + cell.WallRight + " \nl:" + cell.WallLeft + 
+                    //           " \nf:" + cell.WallFront + " \nb:" + cell.WallBack + " \nc:" + cell.Ceiling + 
+                    //           " \nvisited: " + cell.IsVisited);
                     bool noTorches = false;
                     Wall w;
                     GameObject tmp;
