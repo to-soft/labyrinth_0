@@ -25,9 +25,9 @@ public class LabyrinthSpawner : MonoBehaviour
     public int rows = 5;
     public int columns = 5;
     public int stories = 5;
-    public float cellWidth = 3;
-    public float cellHeight = 3;
-    public float cellDepth = 3;
+    public float cellWidth;
+    public float cellHeight;
+    public float cellDepth;
     public bool entrance = true;
     public GameObject goalPrefab = null;
 
