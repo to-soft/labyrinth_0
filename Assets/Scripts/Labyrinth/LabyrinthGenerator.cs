@@ -26,7 +26,6 @@ public class LabyrinthGenerator : LabyrinthContainer
         Debug.Log($"Total cells: {cellCount}");
         
         int forgottenCellCount = 0;
-        // List<LabyrinthCell> forgottenCells = new List<LabyrinthCell>();
         LabyrinthCell[] forgottenCells = new LabyrinthCell[cellCount];
         for (int story = 0; story < StoryCount; story++)
         {
@@ -63,6 +62,13 @@ public class LabyrinthGenerator : LabyrinthContainer
                 for (int column = 0; column < ColumnCount; column++)
                 {
                     LabyrinthCell cell = GetLabyrinthCell(row, column, story);
+                    if (!cell.IsVisited)
+                    {
+                        Debug.Log($"filling in cell: x{column} y{story} z{row}");
+                        cell.WallFront = cell.WallRight =
+                            cell.WallBack = cell.WallLeft = cell.Ceiling = cell.Floor = true;
+                    }
+                        
                     if (cell.WallFront && row + 1 < RowCount) 
                     {
                         GetLabyrinthCell(row + 1, column, story).WallBack = false;

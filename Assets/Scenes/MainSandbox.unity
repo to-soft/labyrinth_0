@@ -2196,7 +2196,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 4909495442388787164, guid: 225269a6c8f9ab11fa9116db73ce00d2, type: 3}
       propertyPath: rows
-      value: 4
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 4909495442388787164, guid: 225269a6c8f9ab11fa9116db73ce00d2, type: 3}
       propertyPath: wall
@@ -2204,11 +2204,11 @@ PrefabInstance:
       objectReference: {fileID: 8727059300355150762, guid: 66d0601699a594790889576703e5f516, type: 3}
     - target: {fileID: 4909495442388787164, guid: 225269a6c8f9ab11fa9116db73ce00d2, type: 3}
       propertyPath: columns
-      value: 4
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 4909495442388787164, guid: 225269a6c8f9ab11fa9116db73ce00d2, type: 3}
       propertyPath: stories
-      value: 3
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 4909495442388787164, guid: 225269a6c8f9ab11fa9116db73ce00d2, type: 3}
       propertyPath: fullRandom
@@ -2216,7 +2216,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4909495442388787164, guid: 225269a6c8f9ab11fa9116db73ce00d2, type: 3}
       propertyPath: randomSeed
-      value: 2
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 5685001894913144548, guid: 225269a6c8f9ab11fa9116db73ce00d2, type: 3}
       propertyPath: m_RootOrder
