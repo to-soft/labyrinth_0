@@ -1,7 +1,9 @@
+using System;
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
+using Random = UnityEngine.Random;
 
 public class LabyrinthGenerator : LabyrinthContainer
 {
@@ -10,18 +12,46 @@ public class LabyrinthGenerator : LabyrinthContainer
         
     }
 
+    public int furthestDistance = 0;
+    public int prevCellDistance = 0;
+    public LabyrinthCell escapeCell;
+
     public override void GenerateLabyrinth()
     {
-        VisitCell(0, 0, 0, 
-            Direction.Start, GetLabyrinthCell(0, 0, 0), Direction.Base);
+        int startingColumn = (int)Math.Ceiling(ColumnCount / 2f) - 1;
+        VisitCell(0, startingColumn, 0, 
+            Direction.Start, GetLabyrinthCell(0, startingColumn, 0), Direction.Base);
+        Debug.Log($"Furthest cell: {furthestDistance}");
         StudyLabyrinth();
         RepairLabyrinth();
     }
 
     private void StudyLabyrinth()
     {
+        Debug.Log($"\n###LABYRINTH RESEARCH###\n");
         int cellCount = RowCount * ColumnCount * StoryCount;
         Debug.Log($"Total cells: {cellCount}");
+        
+        int forgottenCellCount = 0;
+        LabyrinthCell[] forgottenCells = new LabyrinthCell[cellCount];
+        for (int story = 0; story < StoryCount; story++)
+        {
+            for (int row = 0; row < RowCount; row++)
+            {
+                for (int column = 0; column < ColumnCount; column++)
+                {
+                    LabyrinthCell cellInQuestion = GetLabyrinthCell(row, column, story);
+                    if (!cellInQuestion.IsVisited)
+                    {
+                        forgottenCells[forgottenCellCount] = cellInQuestion;
+                        forgottenCellCount++;
+                    }
+                }
+            }
+        }
+        Debug.Log($"Forgotten cell count: {forgottenCellCount}");
+        Debug.Log($"Forgotten cells: {forgottenCellCount}");
+        Debug.Log($"\n###END RESEARCH###\n");
     }
 
     private void RepairLabyrinth()
@@ -33,6 +63,13 @@ public class LabyrinthGenerator : LabyrinthContainer
                 for (int column = 0; column < ColumnCount; column++)
                 {
                     LabyrinthCell cell = GetLabyrinthCell(row, column, story);
+                    if (!cell.IsVisited)
+                    {
+                        Debug.Log($"filling in cell: x{column} y{story} z{row}");
+                        cell.WallFront = cell.WallRight =
+                            cell.WallBack = cell.WallLeft = cell.Ceiling = cell.Floor = true;
+                    }
+                        
                     if (cell.WallFront && row + 1 < RowCount) 
                     {
                         GetLabyrinthCell(row + 1, column, story).WallBack = false;
@@ -54,93 +91,62 @@ public class LabyrinthGenerator : LabyrinthContainer
                 }
             }
         }
+
+        escapeCell.IsGoal = true;
     }
 
-    private bool CanAscend(int row, int column, int story, Direction direction, Direction directionVertical)
+    private bool CanAscendOrDescend(int row, int column, int story, Direction direction, Direction directionVertical)
     {
-        if (direction is Direction.Up or Direction.Down) { return false; }
-
-        int mappedDirection = directionVertical == Direction.Up ? 1 : -1;
-        int neighborStory = story + mappedDirection;
-        bool neighborAtEdge = neighborStory == 0 || neighborStory + 1 == StoryCount;
-        if (row == 0 || row + 1 == RowCount || column == 0 || column + 1 == ColumnCount) { return false; }
+        if (direction is Direction.Up or Direction.Down or Direction.Start) { return false; }
+        // Debug.Log($"checking move: {direction} and {directionVertical}");
+        // Debug.Log($"starting coordinates: story {story} row {row} column: {column}");
         
-        //check cells adjacent to target + 1 in horizontal direction
-        // switch (direction)
-        // {
-        //     case Direction.Front:
-        //         if (GetLabyrinthCell(row + 1, column + 1, neighborStory).IsVisited 
-        //             || GetLabyrinthCell(row + 1, column - 1, neighborStory).IsVisited) { return false; }
-        //
-        //         if (!neighborAtEdge 
-        //             && GetLabyrinthCell(row + 1, column, neighborStory + mappedDirection).IsVisited) { return false; }
-        //         break;
-        //     case Direction.Back:
-        //         if (GetLabyrinthCell(row - 1, column + 1, neighborStory).IsVisited 
-        //             || GetLabyrinthCell(row - 1, column - 1, neighborStory).IsVisited) { return false; }
-        //         if (!neighborAtEdge 
-        //             && GetLabyrinthCell(row - 1, column, neighborStory + mappedDirection).IsVisited) { return false; }
-        //         break;
-        //     case Direction.Right:
-        //         if (GetLabyrinthCell(row + 1, column + 1, neighborStory).IsVisited 
-        //             || GetLabyrinthCell(row - 1, column + 1, neighborStory).IsVisited) { return false; }
-        //         if (!neighborAtEdge 
-        //             && GetLabyrinthCell(row - 1, column, neighborStory + mappedDirection).IsVisited) { return false; }
-        //         break;
-        //     case Direction.Left:
-        //         if (GetLabyrinthCell(row + 1, column - 1, neighborStory).IsVisited 
-        //             || GetLabyrinthCell(row - 1, column - 1, neighborStory).IsVisited) { return false; }
-        //         if (!neighborAtEdge 
-        //             && GetLabyrinthCell(row - 1, column, neighborStory + mappedDirection).IsVisited) { return false; }
-        //         break;
-        // }
-
-        //check cell above/below current and target cells
-        if (directionVertical == Direction.Up && neighborStory + 1 < StoryCount)
-        {
-            if (GetLabyrinthCell(row, column, neighborStory + 1).IsVisited) { return false; }
-
-            if (story > 0)
-            {
-                if (GetLabyrinthCell(row, column, story - 1).IsVisited) { return false; }
-            }
-        }
-        if (directionVertical == Direction.Down && story + 1 < StoryCount)
-        {
-            if (GetLabyrinthCell(row, column, story + 1).IsVisited) { return false; }
-
-            if (neighborStory > 0)
-            {
-                if (GetLabyrinthCell(row, column, neighborStory - 1).IsVisited) { return false; }
-            }   
-        }
-
-        return // adjacent cells
-            (direction == Direction.Back || !GetLabyrinthCell(row + 1, column, story).IsVisited)
-            && (direction == Direction.Front || !GetLabyrinthCell(row - 1, column, story).IsVisited)
-            && (direction == Direction.Left || !GetLabyrinthCell(row, column + 1, story).IsVisited)
-            && (direction == Direction.Right || !GetLabyrinthCell(row, column - 1, story).IsVisited)
-            // adjacent cells of target cell
-            && !GetLabyrinthCell(row + 1, column, neighborStory).IsVisited
-            && !GetLabyrinthCell(row - 1, column, neighborStory).IsVisited
-            && !GetLabyrinthCell(row, column + 1, neighborStory).IsVisited
-            && !GetLabyrinthCell(row, column - 1, neighborStory).IsVisited;
+        int targetStory = story + (directionVertical == Direction.Up ? 1 : -1);
+        int targetColumn = column + (direction == Direction.Right ? 1 : direction == Direction.Left ? -1 : 0);
+        int targetRow = row + (direction == Direction.Front ? 1 : direction == Direction.Back ? -1 : 0);
+        // Debug.Log($"target coordinates:\nstory {targetStory}\nrow {targetRow}\ncolumn: {targetColumn}");
+        
+        if (targetStory < 0 || targetStory == StoryCount) { return false; }
+        if (targetColumn < 0 || targetColumn == ColumnCount) { return false; }
+        if (targetRow < 0 || targetRow == RowCount) { return false; }
+        
+        return !GetLabyrinthCell(targetRow, targetColumn, targetStory).IsVisited 
+                && !GetLabyrinthCell(row, column, targetStory).IsVisited;
     }
 
-    private void VisitCell(int row, int column, int story, 
-        Direction moveMade, LabyrinthCell prevCell = null, Direction prevMoveMade = Direction.Base)
+    private void VisitCell(int row, int column, int story, Direction moveMade, 
+        LabyrinthCell prevCell = null, Direction prevMoveMade = Direction.Base)
     {
-        // Debug.Log("this cell is x" + column + ", y" + story + ", z" + row + "\n moved: " + moveMade);
-        int movesAvailableCount = 0;
-        bool createRamp = moveMade is Direction.Up or Direction.Down && prevCell is not null;
+        Debug.Log("visiting cell: x" + column + ", y" + story + ", z" + row + "\n moved: " + moveMade);
         LabyrinthCell thisCell = GetLabyrinthCell(row, column, story);
+        Debug.Log("is visited: " + thisCell.IsVisited);
+        
+        int currentDistance = prevCellDistance + 1;
+        if (currentDistance > furthestDistance)
+        {
+            furthestDistance = currentDistance;
+            Debug.Log($"new furthest distance: {furthestDistance}");
+            escapeCell = thisCell;
+        }
+        
+        int movesAvailableCount = 0;
         Direction[] movesAvailable = new Direction[6];
         
+        thisCell.Floor = story == 0;
+        if (moveMade == Direction.Start)
+        {
+            thisCell.Door = true;
+            thisCell.WallBack = false;
+        }
+        
+        bool createRamp = moveMade is Direction.Up or Direction.Down && prevCell is not null;
+
         if (createRamp)
         {
             // has to go same direction as last iteration's moveMade (this iteration's prevModeMade)
-            thisCell.Floor = prevCell.Floor = story == 0;
+            // prevCell.Floor = story == 0;
             thisCell.IsVisited = true;
+            prevCellDistance = currentDistance;
             switch (prevMoveMade)
             {
                 case Direction.Start:
@@ -148,64 +154,68 @@ public class LabyrinthGenerator : LabyrinthContainer
                 case Direction.Right:
                     if (moveMade == Direction.Up)
                     {
-                        prevCell.RampRight = prevCell.WallBack = prevCell.WallFront =
+                        prevCell.RampRight = prevCell.WallBack = prevCell.WallFront = prevCell.WallRight =
                             thisCell.WallBack = thisCell.WallLeft = thisCell.WallFront = thisCell.Ceiling = true;
-                        prevCell.WallRight = false;
+                        Debug.Log($"Making ceiling at: s{story} r{row} c{column} line 173");
+                        Debug.Log("Moving (up and) right...");
                     }
                     else
                     {
-                        prevCell.WallFront = prevCell.WallRight = prevCell.WallBack = prevCell.Ceiling =
-                            thisCell.WallBack = thisCell.WallFront = thisCell.RampLeft = true;
-                        thisCell.WallLeft = false;
-
+                        prevCell.WallFront = prevCell.WallRight = prevCell.WallBack = prevCell.Ceiling = 
+                            thisCell.WallLeft = thisCell.WallBack = thisCell.WallFront = thisCell.RampLeft = true;
+                        Debug.Log($"Making ceiling at: s{story} r{row} c{column} line 180");
+                        Debug.Log("Moving (down and) right...");
                     }
                     VisitCell(row, column + 1, story, Direction.Right, thisCell, moveMade);
                     break;
                 case Direction.Front:
                     if (moveMade == Direction.Up)
                     {
-                        prevCell.RampFront = prevCell.WallLeft = prevCell.WallRight =
+                        prevCell.RampFront = prevCell.WallLeft = prevCell.WallRight = prevCell.WallFront = 
                             thisCell.WallBack = thisCell.WallLeft = thisCell.WallRight = thisCell.Ceiling = true;
-                        prevCell.WallFront = false;
+                        Debug.Log($"Making ceiling at: s{story} r{row} c{column} line 190");
+                        Debug.Log("Moving (up and) forward...");
                     }
                     else
                     {
                         prevCell.WallFront = prevCell.WallRight = prevCell.WallLeft = prevCell.Ceiling =
-                            thisCell.WallLeft = thisCell.WallRight = thisCell.RampBack = true;
-                        thisCell.WallBack = false;
-
+                            thisCell.WallBack = thisCell.WallLeft = thisCell.WallRight = thisCell.RampBack = true;
+                        Debug.Log($"Making ceiling at: s{story} r{row} c{column} line 197");
+                        Debug.Log("Moving (down and) forward...");
                     }
                     VisitCell(row + 1, column, story, Direction.Front, thisCell, moveMade);
                     break;
                 case Direction.Left:
                     if (moveMade == Direction.Up)
                     {
-                        prevCell.RampLeft = prevCell.WallFront = prevCell.WallBack =
+                        prevCell.RampLeft = prevCell.WallFront = prevCell.WallBack = prevCell.WallLeft = 
                             thisCell.WallBack = thisCell.WallFront = thisCell.WallRight = thisCell.Ceiling = true;
-                        prevCell.WallLeft = false;
+                        Debug.Log($"Making ceiling at: s{story} r{row} c{column} line 207");
+                        Debug.Log("Moving (up and) left...");
                     }
                     else
                     {
-                        prevCell.WallFront = prevCell.WallBack = prevCell.WallLeft = prevCell.Ceiling =
-                            thisCell.WallBack = thisCell.WallFront = thisCell.RampRight = true;
-                        thisCell.WallRight = false;
-
+                        prevCell.WallFront = prevCell.WallBack = prevCell.WallLeft = prevCell.Ceiling = 
+                            thisCell.WallRight = thisCell.WallBack = thisCell.WallFront = thisCell.RampRight = true;
+                        Debug.Log($"Making ceiling at: s{story} r{row} c{column} line 214");
+                        Debug.Log("Moving (down and) left...");
                     }
                     VisitCell(row, column - 1, story, Direction.Left, thisCell, moveMade);
                     break;
                 case Direction.Back:
                     if (moveMade == Direction.Up)
                     {
-                        prevCell.RampBack = prevCell.WallLeft = prevCell.WallRight =
+                        prevCell.RampBack = prevCell.WallLeft = prevCell.WallRight = prevCell.WallBack = 
                             thisCell.WallLeft = thisCell.WallRight = thisCell.WallFront = thisCell.Ceiling = true;
-                        prevCell.WallBack = false;
+                        Debug.Log($"Making ceiling at: s{story} r{row} c{column} line 224");
+                    Debug.Log("Moving (up and) backward...");
                     }
                     else
                     {
                         prevCell.WallRight = prevCell.WallBack = prevCell.WallLeft = prevCell.Ceiling =
-                            thisCell.WallLeft = thisCell.WallRight = thisCell.RampFront = true;
-                        thisCell.WallFront = false;
-
+                            thisCell.WallFront = thisCell.WallLeft = thisCell.WallRight = thisCell.RampFront = true;
+                        Debug.Log($"Making ceiling at: s{story} r{row} c{column} line 231");
+                        Debug.Log("Moving (down and) backward...");
                     }
                     VisitCell(row - 1, column, story, Direction.Back, thisCell, moveMade);
                     break;
@@ -213,9 +223,19 @@ public class LabyrinthGenerator : LabyrinthContainer
         }
         else
         {
+            // made sole move... (moved up or down, can't move anywhere else, return to prev in stack...
+            // moved l/r/f/b, can't move up or down but can move l/r/f/b
+            bool overrideMovement = false;
+            bool overrideVerticalMovement = false;
             do
             {
+                Debug.Log($"Current distance is: {currentDistance}");
                 movesAvailableCount = 0;
+                if (overrideMovement)
+                {
+                    
+                    return;
+                }
 
                 // check if we are at the edge of the grid, and that we haven't been here yet
                 if (column + 1 < ColumnCount && !GetLabyrinthCell(row, column + 1, story).IsVisited)
@@ -257,37 +277,34 @@ public class LabyrinthGenerator : LabyrinthContainer
                     movesAvailable[movesAvailableCount] = Direction.Back;
                     movesAvailableCount++;
                 }
-                else if (!thisCell.IsVisited && moveMade != Direction.Front)
+                else if (!thisCell.IsVisited && moveMade != Direction.Front && moveMade != Direction.Start)
                 {
                     thisCell.WallBack = true;
                 }
 
-                // check up
-                if (story + 1 < StoryCount
-                    && !GetLabyrinthCell(row, column, story + 1).IsVisited
-                    && CanAscend(row, column, story, moveMade, Direction.Up))
+                if (!overrideVerticalMovement)
                 {
-                    // Debug.Log("can go up...");
-                    movesAvailable[movesAvailableCount] = Direction.Up;
-                    movesAvailableCount++;
-                }
-                else if (!thisCell.IsVisited && moveMade != Direction.Down)
-                {
-                    thisCell.Ceiling = true;
-                }
+                    // check up
+                    if (CanAscendOrDescend(row, column, story, moveMade, Direction.Up))
+                    {
+                        movesAvailable[movesAvailableCount] = Direction.Up;
+                        movesAvailableCount++;
+                    }
+                    else if (!thisCell.IsVisited && moveMade != Direction.Down)
+                    {
+                        thisCell.Ceiling = true;
+                    }
 
-                // check down
-                if (story >= 1 
-                    && !GetLabyrinthCell(row, column, story - 1).IsVisited 
-                    && CanAscend(row, column, story, moveMade, Direction.Down))
-                {
-                    // Debug.Log("can go down...");
-                    movesAvailable[movesAvailableCount] = Direction.Down;
-                    movesAvailableCount++;
-                }
-                else if ((!thisCell.IsVisited && moveMade != Direction.Up) || story == 0)
-                {
-                    thisCell.Floor = true;
+                    // check down
+                    if (CanAscendOrDescend(row, column, story, moveMade, Direction.Down))
+                    {
+                        movesAvailable[movesAvailableCount] = Direction.Down;
+                        movesAvailableCount++;
+                    }
+                    else if ((!thisCell.IsVisited && moveMade != Direction.Up) || story == 0)
+                    {
+                        thisCell.Floor = true;
+                    }
                 }
             
                 thisCell.IsVisited = true;
@@ -296,34 +313,44 @@ public class LabyrinthGenerator : LabyrinthContainer
 
                 if (movesAvailableCount > 0)
                 {
+                    prevCellDistance = currentDistance;
                     switch (movesAvailable[Random.Range(0, movesAvailableCount)])
                     {
                         case Direction.Start:
                             break;
                         case Direction.Right:
+                            Debug.Log("Moving right...");
+                            overrideVerticalMovement = true;
                             VisitCell(row, column + 1, story, Direction.Right, thisCell, moveMade);
                             break;
                         case Direction.Front:
+                            Debug.Log("Moving forward...");
+                            overrideVerticalMovement = true;
                             VisitCell(row + 1, column, story, Direction.Front, thisCell, moveMade);
                             break;
                         case Direction.Left:
+                            Debug.Log("Moving left...");
+                            overrideVerticalMovement = true;
                             VisitCell(row, column - 1, story, Direction.Left, thisCell, moveMade);
                             break;
                         case Direction.Back:
+                            Debug.Log("Moving backward...");
+                            overrideVerticalMovement = true;
                             VisitCell(row - 1, column, story, Direction.Back, thisCell, moveMade);
                             break;
                         case Direction.Up:
+                            Debug.Log("Moving up...");
+                            overrideMovement = true;
                             VisitCell(row, column, story + 1, Direction.Up, thisCell, moveMade);
                             break;
                         case Direction.Down:
+                            Debug.Log("Moving down...");
+                            overrideMovement = true;
                             VisitCell(row, column, story - 1, Direction.Down, thisCell, moveMade);
                             break;
                     }
                 }
             } while (movesAvailableCount > 0);
-
-            GetLabyrinthCell(0, 0, 0).Door = true;
-            GetLabyrinthCell(0, 0, 0).WallBack = false;
         }
     }
 }

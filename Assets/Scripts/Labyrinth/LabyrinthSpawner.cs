@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -25,10 +26,10 @@ public class LabyrinthSpawner : MonoBehaviour
     public int rows = 5;
     public int columns = 5;
     public int stories = 5;
-    public float cellWidth = 3;
-    public float cellHeight = 3;
-    public float cellDepth = 3;
-    public bool entrance = true;
+    public float cellWidth;
+    public float cellHeight;
+    public float cellDepth;
+    public int entranceColumn;
     public GameObject goalPrefab = null;
 
     private LabyrinthContainer mLabyrinthContainer = null;
@@ -47,14 +48,9 @@ public class LabyrinthSpawner : MonoBehaviour
                 mLabyrinthContainer = new LabyrinthGenerator(rows, columns, stories);
                 break;
         }
-        
+
         mLabyrinthContainer.GenerateLabyrinth();
-        
-        if (entrance)
-        {
-            mLabyrinthContainer.GetLabyrinthCell(0, 0, 0).WallBack = false;    
-        }
-        
+
 
         for (int story = 0; story < stories; story++)
         {
@@ -145,6 +141,13 @@ public class LabyrinthSpawner : MonoBehaviour
                     {
                         tmp = Instantiate(Door, new Vector3(x, y, z) + Door.transform.position,
                             Quaternion.Euler(0, 0, 0));
+                        tmp.transform.parent = transform;
+                    }
+
+                    if (cell.IsGoal)
+                    {
+                        tmp = Instantiate(goalPrefab, new Vector3(x, y, z) + goalPrefab.transform.position, 
+                            Quaternion.Euler(0, 0, 0)) as GameObject;
                         tmp.transform.parent = transform;
                     }
                 }
