@@ -1,7 +1,9 @@
+using System;
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
+using Random = UnityEngine.Random;
 
 public class LabyrinthGenerator : LabyrinthContainer
 {
@@ -10,11 +12,16 @@ public class LabyrinthGenerator : LabyrinthContainer
         
     }
 
+    public int furthestDistance = 0;
+    public int prevCellDistance = 0;
+    public LabyrinthCell escapeCell;
+
     public override void GenerateLabyrinth()
     {
-        VisitCell(0, 0, 0, 
-            Direction.Start, GetLabyrinthCell(0, 0, 0), Direction.Base);
-        OpenLabyrinth();
+        int startingColumn = (int)Math.Ceiling(ColumnCount / 2f) - 1;
+        VisitCell(0, startingColumn, 0, 
+            Direction.Start, GetLabyrinthCell(0, startingColumn, 0), Direction.Base);
+        Debug.Log($"Furthest cell: {furthestDistance}");
         StudyLabyrinth();
         RepairLabyrinth();
     }
@@ -45,12 +52,6 @@ public class LabyrinthGenerator : LabyrinthContainer
         Debug.Log($"Forgotten cell count: {forgottenCellCount}");
         Debug.Log($"Forgotten cells: {forgottenCellCount}");
         Debug.Log($"\n###END RESEARCH###\n");
-    }
-
-    private void OpenLabyrinth()
-    {
-        GetLabyrinthCell(0, 0, 0).Door = true;
-        GetLabyrinthCell(0, 0, 0).WallBack = false;
     }
 
     private void RepairLabyrinth()
@@ -90,6 +91,8 @@ public class LabyrinthGenerator : LabyrinthContainer
                 }
             }
         }
+
+        escapeCell.IsGoal = true;
     }
 
     private bool CanAscendOrDescend(int row, int column, int story, Direction direction, Direction directionVertical)
@@ -111,22 +114,39 @@ public class LabyrinthGenerator : LabyrinthContainer
                 && !GetLabyrinthCell(row, column, targetStory).IsVisited;
     }
 
-    private void VisitCell(int row, int column, int story, 
-        Direction moveMade, LabyrinthCell prevCell = null, Direction prevMoveMade = Direction.Base)
+    private void VisitCell(int row, int column, int story, Direction moveMade, 
+        LabyrinthCell prevCell = null, Direction prevMoveMade = Direction.Base)
     {
-        Debug.Log("this cell is x" + column + ", y" + story + ", z" + row + "\n moved: " + moveMade);
-        int movesAvailableCount = 0;
-        bool createRamp = moveMade is Direction.Up or Direction.Down && prevCell is not null;
+        Debug.Log("visiting cell: x" + column + ", y" + story + ", z" + row + "\n moved: " + moveMade);
         LabyrinthCell thisCell = GetLabyrinthCell(row, column, story);
         Debug.Log("is visited: " + thisCell.IsVisited);
+        
+        int currentDistance = prevCellDistance + 1;
+        if (currentDistance > furthestDistance)
+        {
+            furthestDistance = currentDistance;
+            Debug.Log($"new furthest distance: {furthestDistance}");
+            escapeCell = thisCell;
+        }
+        
+        int movesAvailableCount = 0;
         Direction[] movesAvailable = new Direction[6];
         
         thisCell.Floor = story == 0;
+        if (moveMade == Direction.Start)
+        {
+            thisCell.Door = true;
+            thisCell.WallBack = false;
+        }
+        
+        bool createRamp = moveMade is Direction.Up or Direction.Down && prevCell is not null;
+
         if (createRamp)
         {
             // has to go same direction as last iteration's moveMade (this iteration's prevModeMade)
             // prevCell.Floor = story == 0;
             thisCell.IsVisited = true;
+            prevCellDistance = currentDistance;
             switch (prevMoveMade)
             {
                 case Direction.Start:
@@ -209,9 +229,11 @@ public class LabyrinthGenerator : LabyrinthContainer
             bool overrideVerticalMovement = false;
             do
             {
+                Debug.Log($"Current distance is: {currentDistance}");
                 movesAvailableCount = 0;
                 if (overrideMovement)
                 {
+                    
                     return;
                 }
 
@@ -255,7 +277,7 @@ public class LabyrinthGenerator : LabyrinthContainer
                     movesAvailable[movesAvailableCount] = Direction.Back;
                     movesAvailableCount++;
                 }
-                else if (!thisCell.IsVisited && moveMade != Direction.Front)
+                else if (!thisCell.IsVisited && moveMade != Direction.Front && moveMade != Direction.Start)
                 {
                     thisCell.WallBack = true;
                 }
@@ -265,26 +287,22 @@ public class LabyrinthGenerator : LabyrinthContainer
                     // check up
                     if (CanAscendOrDescend(row, column, story, moveMade, Direction.Up))
                     {
-                        // Debug.Log("can ascend...");
                         movesAvailable[movesAvailableCount] = Direction.Up;
                         movesAvailableCount++;
                     }
                     else if (!thisCell.IsVisited && moveMade != Direction.Down)
                     {
-                        Debug.Log($"Making ceiling at: s{story} r{row} c{column} line 308");
                         thisCell.Ceiling = true;
                     }
 
                     // check down
                     if (CanAscendOrDescend(row, column, story, moveMade, Direction.Down))
                     {
-                        // Debug.Log("can descend...");
                         movesAvailable[movesAvailableCount] = Direction.Down;
                         movesAvailableCount++;
                     }
                     else if ((!thisCell.IsVisited && moveMade != Direction.Up) || story == 0)
                     {
-                        Debug.Log($"Creating floor at: story {story} row {row} column {column}");
                         thisCell.Floor = true;
                     }
                 }
@@ -295,6 +313,7 @@ public class LabyrinthGenerator : LabyrinthContainer
 
                 if (movesAvailableCount > 0)
                 {
+                    prevCellDistance = currentDistance;
                     switch (movesAvailable[Random.Range(0, movesAvailableCount)])
                     {
                         case Direction.Start:

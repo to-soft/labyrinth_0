@@ -2321,6 +2321,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4909495442388787164, guid: 225269a6c8f9ab11fa9116db73ce00d2, type: 3}
+      propertyPath: goalPrefab
+      value: 
+      objectReference: {fileID: 5461392097008697936, guid: d55a9a332a657b000b3afa063b71a022, type: 3}
+    - target: {fileID: 4909495442388787164, guid: 225269a6c8f9ab11fa9116db73ce00d2, type: 3}
       propertyPath: randomSeed
       value: 3
       objectReference: {fileID: 0}
