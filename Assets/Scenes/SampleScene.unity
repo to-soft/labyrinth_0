@@ -2528,8 +2528,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 73916782e4b4b3559922a498a0a3bc21, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxSpeed: 10
-  mouseSensitivity: 2
+  strength: 3
+  drag: 0.5
   jumpHeight: 5
   cameraPivot: {fileID: 1192105209}
 --- !u!54 &1967538413
