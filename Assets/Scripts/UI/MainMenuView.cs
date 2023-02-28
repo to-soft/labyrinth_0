@@ -11,9 +11,6 @@ public class MainMenuView : View
         _settingsButton.onClick.AddListener(() => ViewManager.Show<SettingsMenuView>());
         _startButton.onClick.AddListener(() =>
         {
-            LabyrinthState.rows = 2;
-            LabyrinthState.columns = 2;
-            LabyrinthState.stories = 2;
             View view = ViewManager.GetView<SettingsMenuView>();
             ViewManager.Hide(view);
         });

@@ -12,7 +12,6 @@ public class VictoryMenuView : View
             LabyrinthState.rows++;
             LabyrinthState.columns++;
             LabyrinthState.stories++;
-            Debug.Log($"labyrinth state: rows: {LabyrinthState.rows} col {LabyrinthState.columns} stories {LabyrinthState.stories}");
             Scene scene = SceneManager.GetActiveScene();
             SceneManager.LoadScene(scene.name);
         });

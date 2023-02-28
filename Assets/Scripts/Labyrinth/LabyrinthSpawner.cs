@@ -23,9 +23,9 @@ public class LabyrinthSpawner : MonoBehaviour
     public GameObject rampFront = null;
     public GameObject rampBack = null;
     public GameObject Door = null;
-    public int rows = 4;
-    public int columns = 4;
-    public int stories = 3;
+    public int rows = 1;
+    public int columns = 1;
+    public int stories = 1;
     public float cellWidth;
     public float cellHeight;
     public float cellDepth;
@@ -42,9 +42,9 @@ public class LabyrinthSpawner : MonoBehaviour
         {
             if (LabyrinthState.rows == 0 || LabyrinthState.columns == 0 || LabyrinthState.stories == 0)
             {
-                LabyrinthState.rows = 4;
-                LabyrinthState.columns = 4;
-                LabyrinthState.stories = 3;
+                LabyrinthState.rows = 1;
+                LabyrinthState.columns = 1;
+                LabyrinthState.stories = 1;
             }
 
             rows = LabyrinthState.rows;
