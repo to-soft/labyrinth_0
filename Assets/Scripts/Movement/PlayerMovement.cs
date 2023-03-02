@@ -6,16 +6,19 @@ using UnityEngine.Serialization;
 
 public class PlayerMovement : MonoBehaviour
 {
+    public Transform playerPrefab;
+
     [Header("Movement")]
     public float moveSpeed;
     public float groundDrag;
+
 
     [Header("Jump Controls")] 
     public float jumpForce;
     public float jumpCooldown;
     public float airMultiplier;
     private bool canJump;
-    
+
     [Header("Ground Check")] 
     public float playerHeight;
     public LayerMask whatIsGround;
