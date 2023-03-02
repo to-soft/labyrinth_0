@@ -30,19 +30,19 @@ public class Wall : MonoBehaviour
         switch (o)
         {
             case Orientation.Front:
-                transform.position += new Vector3(x, y, z + 1.5f);
+                transform.position += new Vector3(x, y, z + 3f);
                 transform.rotation = Quaternion.Euler(0, 0, 0);
                 break;
             case Orientation.Back:
-                transform.position += new Vector3(x, y, z - 1.5f);
+                transform.position += new Vector3(x, y, z - 3f);
                 transform.rotation = Quaternion.Euler(0, 180, 0);
                 break;
             case Orientation.Right:
-                transform.position += new Vector3(x + 1.5f, y, z);
+                transform.position += new Vector3(x + 3f, y, z);
                 transform.rotation = Quaternion.Euler(0, 90, 0);
                 break;
             case Orientation.Left:
-                transform.position += new Vector3(x - 1.5f, y, z);
+                transform.position += new Vector3(x - 3f, y, z);
                 transform.rotation = Quaternion.Euler(0, 270, 0);
                 break;
         }

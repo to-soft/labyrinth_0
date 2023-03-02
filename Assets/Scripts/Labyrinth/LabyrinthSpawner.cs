@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -22,20 +23,34 @@ public class LabyrinthSpawner : MonoBehaviour
     public GameObject rampFront = null;
     public GameObject rampBack = null;
     public GameObject Door = null;
-    public int rows = 5;
-    public int columns = 5;
-    public int stories = 5;
-    public float cellWidth = 3;
-    public float cellHeight = 3;
-    public float cellDepth = 3;
-    public bool entrance = true;
+    public int rows = 1;
+    public int columns = 1;
+    public int stories = 1;
+    public float cellWidth;
+    public float cellHeight;
+    public float cellDepth;
+    public int entranceColumn;
     public GameObject goalPrefab = null;
+    private bool GameplayMode = true;
 
     private LabyrinthContainer mLabyrinthContainer = null;
 
     // called before first frame update
     private void Start()
     {
+        if (GameplayMode)
+        {
+            if (LabyrinthState.rows == 0 || LabyrinthState.columns == 0 || LabyrinthState.stories == 0)
+            {
+                LabyrinthState.rows = 1;
+                LabyrinthState.columns = 1;
+                LabyrinthState.stories = 1;
+            }
+
+            rows = LabyrinthState.rows;
+            columns = LabyrinthState.columns;
+            stories = LabyrinthState.stories;
+        }
         if (!fullRandom)
         {
             Random.InitState(randomSeed);
@@ -44,17 +59,13 @@ public class LabyrinthSpawner : MonoBehaviour
         switch (algorithm)
         {
             case LabyrinthGenerationAlgorithm.PureRecursive:
+                print($"rows: {rows} columns: {columns} stories: {stories}");
                 mLabyrinthContainer = new LabyrinthGenerator(rows, columns, stories);
                 break;
         }
-        
+
         mLabyrinthContainer.GenerateLabyrinth();
-        
-        if (entrance)
-        {
-            mLabyrinthContainer.GetLabyrinthCell(0, 0, 0).WallBack = false;    
-        }
-        
+
 
         for (int story = 0; story < stories; story++)
         {
@@ -145,6 +156,13 @@ public class LabyrinthSpawner : MonoBehaviour
                     {
                         tmp = Instantiate(Door, new Vector3(x, y, z) + Door.transform.position,
                             Quaternion.Euler(0, 0, 0));
+                        tmp.transform.parent = transform;
+                    }
+
+                    if (cell.IsGoal)
+                    {
+                        tmp = Instantiate(goalPrefab, new Vector3(x, y, z) + goalPrefab.transform.position, 
+                            Quaternion.Euler(0, 0, 0)) as GameObject;
                         tmp.transform.parent = transform;
                     }
                 }
