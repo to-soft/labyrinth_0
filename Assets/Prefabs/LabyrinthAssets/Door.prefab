@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 6170417087885808697}
   - component: {fileID: 7860510854684325661}
   m_Layer: 0
-  m_Name: door 1
+  m_Name: Door
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -26,7 +26,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3511496415345658299}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1.5, y: 0, z: -3}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -69,8 +69,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 5.76431, y: 5.889768, z: 9}
-  m_Center: {x: -1.382154, y: 3.1035793, z: 0}
+  m_Size: {x: 6.08073, y: 5.889768, z: 9}
+  m_Center: {x: 3, y: 3.1035793, z: 0}
 --- !u!1001 &3499430451720959470
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -93,7 +93,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 1ec51b290642e4f369bffd9f67bc5f58, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 1.265
+      value: 5.625
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 1ec51b290642e4f369bffd9f67bc5f58, type: 3}
       propertyPath: m_LocalPosition.y
@@ -251,7 +251,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 1ec51b290642e4f369bffd9f67bc5f58, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 1.265
+      value: 5.625
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 1ec51b290642e4f369bffd9f67bc5f58, type: 3}
       propertyPath: m_LocalPosition.y

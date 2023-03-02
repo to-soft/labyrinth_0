@@ -3,7 +3,16 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.PlayerLoop;
 using Random = UnityEngine.Random;
+
+public enum Orientation 
+{
+    Front,
+    Back,
+    Left,
+    Right
+}
 
 public class LabyrinthSpawner : MonoBehaviour
 {
@@ -15,14 +24,16 @@ public class LabyrinthSpawner : MonoBehaviour
     public LabyrinthGenerationAlgorithm algorithm = LabyrinthGenerationAlgorithm.PureRecursive;
     public bool fullRandom = false;
     public int randomSeed = 12345;
-    public GameObject floor = null;
     public Wall wall = null;
+    public Ramp ramp = null;
+    public GameObject floor = null;
     public GameObject ceiling = null;
+    
     public GameObject rampRight = null;
     public GameObject rampLeft = null;
     public GameObject rampFront = null;
     public GameObject rampBack = null;
-    public GameObject Door = null;
+    public GameObject door = null;
     public int rows = 1;
     public int columns = 1;
     public int stories = 1;
@@ -31,8 +42,12 @@ public class LabyrinthSpawner : MonoBehaviour
     public float cellDepth;
     public int entranceColumn;
     public GameObject goalPrefab = null;
-    private bool GameplayMode = true;
+    
+    private Quaternion _qCenter;
+    private Vector3 _wallPosition;
+    private Vector3 _rampPosition;
 
+    private bool GameplayMode = false;
     private LabyrinthContainer mLabyrinthContainer = null;
 
     // called before first frame update
@@ -50,6 +65,8 @@ public class LabyrinthSpawner : MonoBehaviour
             rows = LabyrinthState.rows;
             columns = LabyrinthState.columns;
             stories = LabyrinthState.stories;
+
+            if (rows < 4 || columns < 4) { stories = 1; }
         }
         if (!fullRandom)
         {
@@ -65,8 +82,10 @@ public class LabyrinthSpawner : MonoBehaviour
         }
 
         mLabyrinthContainer.GenerateLabyrinth();
-
-
+        _wallPosition = wall.transform.position;
+        _rampPosition = ramp.transform.position;
+        _qCenter = Quaternion.Euler(0, 0, 0);
+        
         for (int story = 0; story < stories; story++)
         {
             for (int row = 0; row < rows; row++)
@@ -83,85 +102,98 @@ public class LabyrinthSpawner : MonoBehaviour
                     //           " \nvisited: " + cell.IsVisited);
                     bool noTorches = false;
                     Wall w;
+                    Ramp r;
                     GameObject tmp;
-                    Vector3 _v = new Vector3();
-                    Quaternion _q = Quaternion.Euler(0, 0, 0);
+                    Vector3 v = new Vector3(x, y, z);
+                    Vector3 rampVector = v + _rampPosition;
+                    Vector3 wallVector = v + _wallPosition;
 
                     if (cell.Ceiling)
                     {
-                        tmp = Instantiate(ceiling, new Vector3(x, y, z) + ceiling.transform.position, 
-                            Quaternion.Euler(0, 0, 0)) as GameObject;
+                        tmp = Instantiate(ceiling, v + ceiling.transform.position, _qCenter) as GameObject;
                         tmp.transform.parent = transform;
                     }
                     if (cell.Floor)
                     {
-                        tmp = Instantiate(floor, new Vector3(x, y, z) + floor.transform.position, 
-                            Quaternion.Euler(0, 0, 0)) as GameObject;
+                        tmp = Instantiate(floor, v + floor.transform.position, _qCenter) as GameObject;
                         tmp.transform.parent = transform;
                     }
                     if (cell.RampFront)
                     {
-                        tmp = Instantiate(rampFront, new Vector3(x, y, z) + rampFront.transform.position, 
-                            Quaternion.Euler(315, 0, 0)) as GameObject;
-                        tmp.transform.parent = transform;
-                        noTorches = true;
+                        // tmp = Instantiate(rampFront, v + rampFront.transform.position, 
+                        // Quaternion.Euler(315, 0, 0)) as GameObject;
+                        // tmp.transform.parent = transform;
+                        // noTorches = true;
+
+                        r = Instantiate(ramp, rampVector, _qCenter);
+                        r.InitializeRamp(Orientation.Front);
+                        r.transform.parent = transform;
                     }
                     if (cell.RampBack)
                     {
-                        tmp = Instantiate(rampBack, new Vector3(x, y, z) + rampBack.transform.position, 
+                        tmp = Instantiate(rampBack, v + rampBack.transform.position, 
                             Quaternion.Euler(45, 0, 0)) as GameObject;
                         tmp.transform.parent = transform;
                         noTorches = true;
+                        // r = Instantiate(ramp, rampVector, q) as Ramp;
+                        // r.InitializeRamp(Orientation.Back, x, y, z);
+                        // r.transform.parent = transform;
                     }
                     if (cell.RampRight)
                     {
-                        tmp = Instantiate(rampRight, new Vector3(x, y, z) + rampRight.transform.position, 
+                        tmp = Instantiate(rampRight, v + rampRight.transform.position, 
                             Quaternion.Euler(0, 0, 45)) as GameObject;
                         tmp.transform.parent = transform;
                         noTorches = true;
+                        // r = Instantiate(ramp, rampVector, q) as Ramp;
+                        // r.InitializeRamp(Orientation.Right, x, y, z);
+                        // r.transform.parent = transform;
                     }
                     if (cell.RampLeft)
                     {
-                        tmp = Instantiate(rampLeft, new Vector3(x, y, z) + rampLeft.transform.position, 
+                        tmp = Instantiate(rampLeft, v + rampLeft.transform.position, 
                             Quaternion.Euler(0, 0, 315)) as GameObject;
                         tmp.transform.parent = transform;
                         noTorches = true;
+                        // r = Instantiate(ramp, rampVector, q) as Ramp;
+                        // r.InitializeRamp(Orientation.Left, x, y, z);
+                        // r.transform.parent = transform;
                     }
                     if (cell.WallRight)
                     {
-                        w = Instantiate(wall, _v, _q) as Wall;
-                        w.InitializeWall(Orientation.Right, x, y, z, noTorches);
+                        w = Instantiate(wall, wallVector, _qCenter);
+                        w.InitializeWall(Orientation.Right, noTorches);
                         w.transform.parent = transform;
                     }
                     if (cell.WallFront)
                     {
-                        w = Instantiate(wall, _v, _q) as Wall;
-                        w.InitializeWall(Orientation.Front, x, y, z, noTorches);
+                        w = Instantiate(wall, wallVector, _qCenter);
+                        w.InitializeWall(Orientation.Front, noTorches);
                         w.transform.parent = transform;
                     }
                     if (cell.WallLeft)
                     {
-                        w = Instantiate(wall, _v, _q) as Wall;
-                        w.InitializeWall(Orientation.Left, x, y, z, noTorches);
+                        w = Instantiate(wall, wallVector, _qCenter);
+                        w.InitializeWall(Orientation.Left, noTorches);
                         w.transform.parent = transform;
                     }
                     if (cell.WallBack)
                     {
-                        w = Instantiate(wall, _v, _q) as Wall;
-                        w.InitializeWall(Orientation.Back, x, y, z, noTorches);
+                        w = Instantiate(wall, wallVector, _qCenter);
+                        w.InitializeWall(Orientation.Back, noTorches);
                         w.transform.parent = transform;
                     }
 
                     if (cell.Door)
                     {
-                        tmp = Instantiate(Door, new Vector3(x, y, z) + Door.transform.position,
+                        tmp = Instantiate(door, v + door.transform.position,
                             Quaternion.Euler(0, 0, 0));
                         tmp.transform.parent = transform;
                     }
 
                     if (cell.IsGoal)
                     {
-                        tmp = Instantiate(goalPrefab, new Vector3(x, y, z) + goalPrefab.transform.position, 
+                        tmp = Instantiate(goalPrefab, v + goalPrefab.transform.position, 
                             Quaternion.Euler(0, 0, 0)) as GameObject;
                         tmp.transform.parent = transform;
                     }
