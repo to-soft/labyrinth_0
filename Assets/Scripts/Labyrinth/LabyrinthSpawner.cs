@@ -23,20 +23,34 @@ public class LabyrinthSpawner : MonoBehaviour
     public GameObject rampFront = null;
     public GameObject rampBack = null;
     public GameObject Door = null;
-    public int rows = 5;
-    public int columns = 5;
-    public int stories = 5;
+    public int rows = 1;
+    public int columns = 1;
+    public int stories = 1;
     public float cellWidth;
     public float cellHeight;
     public float cellDepth;
     public int entranceColumn;
     public GameObject goalPrefab = null;
+    private bool GameplayMode = true;
 
     private LabyrinthContainer mLabyrinthContainer = null;
 
     // called before first frame update
     private void Start()
     {
+        if (GameplayMode)
+        {
+            if (LabyrinthState.rows == 0 || LabyrinthState.columns == 0 || LabyrinthState.stories == 0)
+            {
+                LabyrinthState.rows = 1;
+                LabyrinthState.columns = 1;
+                LabyrinthState.stories = 1;
+            }
+
+            rows = LabyrinthState.rows;
+            columns = LabyrinthState.columns;
+            stories = LabyrinthState.stories;
+        }
         if (!fullRandom)
         {
             Random.InitState(randomSeed);
@@ -45,6 +59,7 @@ public class LabyrinthSpawner : MonoBehaviour
         switch (algorithm)
         {
             case LabyrinthGenerationAlgorithm.PureRecursive:
+                print($"rows: {rows} columns: {columns} stories: {stories}");
                 mLabyrinthContainer = new LabyrinthGenerator(rows, columns, stories);
                 break;
         }

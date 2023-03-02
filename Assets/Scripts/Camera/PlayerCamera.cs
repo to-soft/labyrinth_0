@@ -20,6 +20,7 @@ public class PlayerCamera : MonoBehaviour
 
     void Update()
     {
+        if (ViewManager.isOpen) { return; }
         float mouseX = Input.GetAxisRaw("Mouse X") * Time.deltaTime * sensX;
         float mouseY = Input.GetAxisRaw("Mouse Y") * Time.deltaTime * sensY;
 
@@ -29,9 +30,6 @@ public class PlayerCamera : MonoBehaviour
 
         pivot.rotation = Quaternion.Euler(xRotation, yRotation, 0);
         playerPrefab.rotation = Quaternion.Euler(0, yRotation, 0);
-        // orientation.Rotate();
-        // transform.LookAt(orientation);
-        // transform.rotation = Quaternion.Euler(xRotation, yRotation, 0);
 
     }
     // Update is called once per frame

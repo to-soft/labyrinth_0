@@ -28,7 +28,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2558292222052736690}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: -0.496, y: 0, z: -0.49299994}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -561,11 +561,11 @@ MeshCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 5
-  m_Convex: 0
+  m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: 0}
 --- !u!1 &5461392097008697936
@@ -577,7 +577,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2516772211563382931}
-  - component: {fileID: 1981708021390625531}
+  - component: {fileID: 538399712506595021}
+  - component: {fileID: 8480943313844479305}
   m_Layer: 0
   m_Name: GoalMarker
   m_TagString: Untagged
@@ -593,17 +594,30 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5461392097008697936}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.5, y: 2, z: -0.5}
+  m_LocalPosition: {x: 0, y: 2, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1900237445475693684}
   - {fileID: 7629058366934501026}
   m_Father: {fileID: 0}
-  m_RootOrder: 18
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!64 &1981708021390625531
-MeshCollider:
+--- !u!114 &538399712506595021
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5461392097008697936}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 000c04a3153048a3af07ed39b422e929, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _victoryMenuView: {fileID: 0}
+--- !u!136 &8480943313844479305
+CapsuleCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -620,10 +634,11 @@ MeshCollider:
   m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
-  serializedVersion: 5
-  m_Convex: 1
-  m_CookingOptions: 30
-  m_Mesh: {fileID: 0}
+  serializedVersion: 2
+  m_Radius: 0.4181131
+  m_Height: 2.6474152
+  m_Direction: 1
+  m_Center: {x: 0.006052017, y: -0.3290248, z: -0.0143117905}
 --- !u!1 &9061587855384725191
 GameObject:
   m_ObjectHideFlags: 0
@@ -652,7 +667,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 9061587855384725191}
   m_LocalRotation: {x: 1, y: -0, z: -0, w: 0}
-  m_LocalPosition: {x: 0, y: 0, z: 1}
+  m_LocalPosition: {x: -0.496, y: 0, z: 0.507}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1070,33 +1085,33 @@ MonoBehaviour:
   - {x: -1, y: 0, z: 0, w: -1}
   - {x: -1, y: 0, z: 0, w: -1}
   - {x: -1, y: 0, z: 0, w: -1}
-  - {x: -0.92387956, y: 0, z: -0.38268343, w: -1}
-  - {x: -0.92387956, y: 0, z: -0.38268343, w: -1}
-  - {x: -0.92387956, y: 0, z: -0.38268343, w: -1}
+  - {x: -0.92387956, y: -0.000000012497857, z: -0.38268343, w: -1}
+  - {x: -0.92387956, y: -0.000000012497857, z: -0.38268343, w: -1}
+  - {x: -0.92387956, y: -0.000000012497857, z: -0.38268343, w: -1}
   - {x: -1, y: 0, z: 0, w: -1}
   - {x: -1, y: 0, z: 0, w: -1}
   - {x: -1, y: 0, z: 0, w: -1}
-  - {x: -0.3826834, y: 0, z: -0.92387956, w: -1}
-  - {x: -0.3826834, y: 0, z: -0.92387956, w: -1}
-  - {x: -0.3826834, y: 0, z: -0.92387956, w: -1}
+  - {x: -0.38268343, y: 0.000000012497859, z: -0.92387956, w: -1}
+  - {x: -0.38268343, y: 0.000000012497859, z: -0.92387956, w: -1}
+  - {x: -0.38268343, y: 0.000000012497859, z: -0.92387956, w: -1}
   - {x: -1, y: 0, z: 0, w: -1}
   - {x: -1, y: 0, z: 0, w: -1}
   - {x: -1, y: 0, z: 0, w: -1}
-  - {x: 0.38268346, y: -0.000000012497857, z: -0.9238795, w: -1}
-  - {x: 0.38268346, y: -0.000000012497857, z: -0.9238795, w: -1}
-  - {x: 0.38268346, y: -0.000000012497857, z: -0.9238795, w: -1}
+  - {x: 0.38268346, y: -0.000000012497857, z: -0.92387956, w: -1}
+  - {x: 0.38268346, y: -0.000000012497857, z: -0.92387956, w: -1}
+  - {x: 0.38268346, y: -0.000000012497857, z: -0.92387956, w: -1}
   - {x: -1, y: 0, z: 0, w: -1}
   - {x: -1, y: 0, z: 0, w: -1}
   - {x: -1, y: 0, z: 0, w: -1}
-  - {x: 0.9238795, y: 0, z: -0.3826835, w: -1}
-  - {x: 0.9238795, y: 0, z: -0.3826835, w: -1}
-  - {x: 0.9238795, y: 0, z: -0.3826835, w: -1}
+  - {x: 0.9238795, y: -0.000000012497857, z: -0.38268346, w: -1}
+  - {x: 0.9238795, y: -0.000000012497857, z: -0.38268346, w: -1}
+  - {x: 0.9238795, y: -0.000000012497857, z: -0.38268346, w: -1}
   - {x: -1, y: 0, z: 0, w: -1}
   - {x: -1, y: 0, z: 0, w: -1}
   - {x: -1, y: 0, z: 0, w: -1}
-  - {x: 0.92387956, y: -0.000000012497859, z: 0.38268343, w: -1}
-  - {x: 0.92387956, y: -0.000000012497859, z: 0.38268343, w: -1}
-  - {x: 0.92387956, y: -0.000000012497859, z: 0.38268343, w: -1}
+  - {x: 0.92387956, y: 0.000000012497858, z: 0.3826834, w: -1}
+  - {x: 0.92387956, y: 0.000000012497858, z: 0.3826834, w: -1}
+  - {x: 0.92387956, y: 0.000000012497858, z: 0.3826834, w: -1}
   - {x: -1, y: 0, z: 0, w: -1}
   - {x: -1, y: 0, z: 0, w: -1}
   - {x: -1, y: 0, z: 0, w: -1}
@@ -1185,10 +1200,10 @@ MeshCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 5
-  m_Convex: 0
+  m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: 0}

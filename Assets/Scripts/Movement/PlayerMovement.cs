@@ -25,7 +25,7 @@ public class PlayerMovement : MonoBehaviour
     public KeyCode JumpKey = KeyCode.Space;
 
     public Transform playerPrefab;
-    
+    private bool uiOpen;
     private float horizontalInput;
     private float verticalInput;
     
@@ -42,7 +42,9 @@ public class PlayerMovement : MonoBehaviour
 
     private void Update()
     {
-        grounded = Physics.Raycast(playerPrefab.position, Vector3.down, playerHeight * 0.5f + 0.2f, whatIsGround);
+        if (ViewManager.isOpen) { return; }
+        grounded = Physics.Raycast(playerPrefab.position, Vector3.down, 
+            playerHeight * 0.5f + 0.2f, whatIsGround);
 
         MovementInput();
         SpeedControl();
@@ -69,11 +71,14 @@ public class PlayerMovement : MonoBehaviour
 
     private void FixedUpdate()
     {
+        if (ViewManager.isOpen) { return; }
         MovePlayer();
     }
 
+
     private void MovementInput()
     {
+        
         horizontalInput = Input.GetAxisRaw("Horizontal");
         verticalInput = Input.GetAxisRaw("Vertical");
 
