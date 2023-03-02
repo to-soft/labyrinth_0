@@ -27,7 +27,6 @@ public class PlayerMovement : MonoBehaviour
     [Header("Keybinds")] 
     public KeyCode JumpKey = KeyCode.Space;
 
-    public Transform playerPrefab;
     private bool uiOpen;
     private float horizontalInput;
     private float verticalInput;
