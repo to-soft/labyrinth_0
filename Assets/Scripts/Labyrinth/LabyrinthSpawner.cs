@@ -131,33 +131,33 @@ public class LabyrinthSpawner : MonoBehaviour
                     }
                     if (cell.RampBack)
                     {
-                        tmp = Instantiate(rampBack, v + rampBack.transform.position, 
-                            Quaternion.Euler(45, 0, 0)) as GameObject;
-                        tmp.transform.parent = transform;
-                        noTorches = true;
-                        // r = Instantiate(ramp, rampVector, q) as Ramp;
-                        // r.InitializeRamp(Orientation.Back, x, y, z);
-                        // r.transform.parent = transform;
+                        // tmp = Instantiate(rampBack, v + rampBack.transform.position, 
+                            // Quaternion.Euler(45, 0, 0)) as GameObject;
+                        // tmp.transform.parent = transform;
+                        // noTorches = true;
+                        r = Instantiate(ramp, rampVector, _qCenter) as Ramp;
+                        r.InitializeRamp(Orientation.Back);
+                        r.transform.parent = transform;
                     }
                     if (cell.RampRight)
                     {
-                        tmp = Instantiate(rampRight, v + rampRight.transform.position, 
-                            Quaternion.Euler(0, 0, 45)) as GameObject;
-                        tmp.transform.parent = transform;
-                        noTorches = true;
-                        // r = Instantiate(ramp, rampVector, q) as Ramp;
-                        // r.InitializeRamp(Orientation.Right, x, y, z);
-                        // r.transform.parent = transform;
+                        // tmp = Instantiate(rampRight, v + rampRight.transform.position, 
+                            // Quaternion.Euler(0, 0, 45)) as GameObject;
+                        // tmp.transform.parent = transform;
+                        // noTorches = true;
+                        r = Instantiate(ramp, rampVector, _qCenter) as Ramp;
+                        r.InitializeRamp(Orientation.Right);
+                        r.transform.parent = transform;
                     }
                     if (cell.RampLeft)
                     {
-                        tmp = Instantiate(rampLeft, v + rampLeft.transform.position, 
-                            Quaternion.Euler(0, 0, 315)) as GameObject;
-                        tmp.transform.parent = transform;
-                        noTorches = true;
-                        // r = Instantiate(ramp, rampVector, q) as Ramp;
-                        // r.InitializeRamp(Orientation.Left, x, y, z);
-                        // r.transform.parent = transform;
+                        // tmp = Instantiate(rampLeft, v + rampLeft.transform.position, 
+                            // Quaternion.Euler(0, 0, 315)) as GameObject;
+                        // tmp.transform.parent = transform;
+                        // noTorches = true;
+                        r = Instantiate(ramp, rampVector, _qCenter) as Ramp;
+                        r.InitializeRamp(Orientation.Left);
+                        r.transform.parent = transform;
                     }
                     if (cell.WallRight)
                     {
