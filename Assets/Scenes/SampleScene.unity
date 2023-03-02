@@ -245,7 +245,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh34112
+  m_Name: pb_Mesh74814
   serializedVersion: 11
   m_SubMeshes:
   - serializedVersion: 2
@@ -2646,6 +2646,18 @@ PrefabInstance:
     - target: {fileID: 725140426978270560, guid: 88e8829f9f1533203a8ad92bc73a4359, type: 3}
       propertyPath: m_Name
       value: WheelPlayer
+      objectReference: {fileID: 0}
+    - target: {fileID: 1464123668560913749, guid: 88e8829f9f1533203a8ad92bc73a4359, type: 3}
+      propertyPath: m_Mass
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4351883443191225910, guid: 88e8829f9f1533203a8ad92bc73a4359, type: 3}
+      propertyPath: friction
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4351883443191225910, guid: 88e8829f9f1533203a8ad92bc73a4359, type: 3}
+      propertyPath: strength
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 7586135263140807812, guid: 88e8829f9f1533203a8ad92bc73a4359, type: 3}
       propertyPath: m_RootOrder
