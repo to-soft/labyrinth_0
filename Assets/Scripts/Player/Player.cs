@@ -14,6 +14,7 @@ public class Player : MonoBehaviour
     private int _story;
     private int _column;
     public static bool Warmer = false;
+    public static int DistanceFromGoal;
     
     private void Awake()
     {
@@ -53,10 +54,12 @@ public class Player : MonoBehaviour
             }
             else
             {
-                previousDistanceFromGoal = Int32.MaxValue;
+                DistanceFromGoal = previousDistanceFromGoal = Int32.MaxValue;
+                
             }
             currentCell = LabyrinthState.GetLabyrinthCellMap(_row, _column, _story);
-            if (currentCell.DistanceFromGoal < previousDistanceFromGoal)
+            DistanceFromGoal = currentCell.DistanceFromGoal;
+            if (DistanceFromGoal < previousDistanceFromGoal)
             {
                 Warmer = true;
             }

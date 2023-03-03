@@ -31,7 +31,7 @@ public class CellTrackerView : View
 
         string warmer = Player.Warmer ? "Warmer..." : "Colder...";
         text.text = $"Row: {_currentCell.Row}\nColumn: {_currentCell.Column}\nStory: {_currentCell.Story}" +
-                    $"\n{warmer}";
+                    $"\n{warmer}\nDistance from goal: {Player.DistanceFromGoal}";
     }
 
     private void Update()
