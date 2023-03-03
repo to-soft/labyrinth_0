@@ -34,21 +34,29 @@ public abstract class LabyrinthContainer
         mLabyrinthRows = Mathf.Abs(rows);
         mLabyrinthColumns = Mathf.Abs(columns);
         mLabyrinthStories = Mathf.Abs(stories);
+        LabyrinthState.rows = Mathf.Abs(rows);
+        LabyrinthState.columns = Mathf.Abs(columns);
+        LabyrinthState.stories = Mathf.Abs(stories);
         
         if (mLabyrinthRows == 0)
         {
             mLabyrinthRows = 1;
+            LabyrinthState.rows = 1;
         }
         if (mLabyrinthColumns == 0)
         {
             mLabyrinthColumns = 1;
+            LabyrinthState.columns = 1;
         }
         if (mLabyrinthStories == 0)
         {
             mLabyrinthStories = 1;
+            LabyrinthState.stories = 1;
         }
 
         mLabyrinth = new LabyrinthCell[rows, columns, stories];
+        LabyrinthState.LabyrinthMap = new LabyrinthCell[rows, columns, stories];
+        
 
         for (int story = 0; story < stories; story++)
         {
@@ -56,14 +64,13 @@ public abstract class LabyrinthContainer
             {
                 for (int column = 0; column < columns; column++)
                 {
-                    mLabyrinth[row, column, story] = new LabyrinthCell();
+                    mLabyrinth[row, column, story] = new LabyrinthCell(row, column, story);
                 }
             }
         }
     }
     
     // called by the algorithm class to start the algorithm
-
     public abstract void GenerateLabyrinth();
 
     public LabyrinthCell GetLabyrinthCell(int row, int column, int story)
@@ -75,6 +82,6 @@ public abstract class LabyrinthContainer
         }
 
         Debug.Log("x" + column + ", y" + story + ", z" + row);
-        throw new System.ArgumentOutOfRangeException();
+        throw new ArgumentOutOfRangeException();
     }
 }

@@ -7,8 +7,6 @@ public class Ramp : MonoBehaviour
 
     public void InitializeRamp(Orientation o)
     {
-
-        // offset
         Debug.Log($"RAMP: Orientation: {o}");
         Debug.Log($"RAMP: Initial position: {transform.position}");
 
@@ -27,11 +25,13 @@ public class Ramp : MonoBehaviour
                 break;
             case Orientation.Right:
                 transform.localScale += xExtension;
-                transform.rotation = Quaternion.Euler(0, 90, 0);
+                transform.rotation = Quaternion.Euler(0, 0, 45);
                 break;
             case Orientation.Left:
                 transform.localScale += xExtension;
-                transform.rotation = Quaternion.Euler(0, 270, 0);
+                transform.rotation = Quaternion.Euler(0, 0, 315);
+                // adjust for slight asymmetry
+                transform.position += new Vector3(-0.05f, 0.075f, 0);
                 break;
         }
         Debug.Log($"WALL: Final position: {transform.position}");
