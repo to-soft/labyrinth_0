@@ -7,8 +7,8 @@ public class Ramp : MonoBehaviour
 
     public void InitializeRamp(Orientation o)
     {
-        Debug.Log($"RAMP: Orientation: {o}");
-        Debug.Log($"RAMP: Initial position: {transform.position}");
+        // Debug.Log($"RAMP: Orientation: {o}");
+        // Debug.Log($"RAMP: Initial position: {transform.position}");
 
         Vector3 xExtension = new Vector3(0.9f, 0, 0);
         Vector3 zExtension = new Vector3(0, 0, 0.9f);
@@ -34,6 +34,6 @@ public class Ramp : MonoBehaviour
                 transform.position += new Vector3(-0.05f, 0.075f, 0);
                 break;
         }
-        Debug.Log($"WALL: Final position: {transform.position}");
+        // Debug.Log($"WALL: Final position: {transform.position}");
     }
 }

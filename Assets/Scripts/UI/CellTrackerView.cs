@@ -1,21 +1,30 @@
+using System;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class CellTrackerView : View
 {
     private LabyrinthCell _currentCell;
     [SerializeField] private TextMeshProUGUI text;
-    
+
+    private void OnEnable()
+    {
+        SceneManager.sceneLoaded += OnSceneLoaded;
+    }
+
+    void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        text.text = "You're not in the Labyrinth...";
+
+    }
+
     public override void Hide() { }
     
-    public override void Show()
-    {
-        gameObject.SetActive(true);
-    }
+    public override void Show() { gameObject.SetActive(true); }
     
     public override void Initialize()
     {
-        Debug.Log("Cell Tracker View searching for player object...");
         Show();
     }
 
@@ -24,8 +33,7 @@ public class CellTrackerView : View
         _currentCell = Player.currentCell;
         if (_currentCell is null)
         {
-            print("current cell is null");
-            text.text = "";
+            text.text = "You're not in the labyrinth...";
             return;
         }
 

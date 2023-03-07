@@ -2478,6 +2478,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5759358382390531596, guid: a0c0ff2bb49f88899a91be6f3491ae2d, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 400
+      objectReference: {fileID: 0}
     - target: {fileID: 5918659149554192365, guid: a0c0ff2bb49f88899a91be6f3491ae2d, type: 3}
       propertyPath: m_Name
       value: CellTracker
@@ -2485,6 +2489,17 @@ PrefabInstance:
     - target: {fileID: 5918659149554192365, guid: a0c0ff2bb49f88899a91be6f3491ae2d, type: 3}
       propertyPath: m_IsActive
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8926657463483546145, guid: a0c0ff2bb49f88899a91be6f3491ae2d, type: 3}
+      propertyPath: m_text
+      value: 'Row: 0
+
+        Column: 0
+
+        Story: 0
+
+        Distance from
+        goal: 1000'
       objectReference: {fileID: 0}
     - target: {fileID: 8926657463483546145, guid: a0c0ff2bb49f88899a91be6f3491ae2d, type: 3}
       propertyPath: m_fontSize
@@ -3089,7 +3104,7 @@ PrefabInstance:
       objectReference: {fileID: 1123395519834045738, guid: 566dcef96cd47369989cc9fffadeb984, type: 3}
     - target: {fileID: 4909495442388787164, guid: 225269a6c8f9ab11fa9116db73ce00d2, type: 3}
       propertyPath: rows
-      value: 6
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 4909495442388787164, guid: 225269a6c8f9ab11fa9116db73ce00d2, type: 3}
       propertyPath: wall
@@ -3097,11 +3112,11 @@ PrefabInstance:
       objectReference: {fileID: 8727059300355150762, guid: 66d0601699a594790889576703e5f516, type: 3}
     - target: {fileID: 4909495442388787164, guid: 225269a6c8f9ab11fa9116db73ce00d2, type: 3}
       propertyPath: columns
-      value: 6
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 4909495442388787164, guid: 225269a6c8f9ab11fa9116db73ce00d2, type: 3}
       propertyPath: stories
-      value: 6
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 4909495442388787164, guid: 225269a6c8f9ab11fa9116db73ce00d2, type: 3}
       propertyPath: cellDepth

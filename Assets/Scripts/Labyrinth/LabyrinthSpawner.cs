@@ -42,7 +42,7 @@ public class LabyrinthSpawner : MonoBehaviour
     private Vector3 _floorPosition;
     private Vector3 _ceilingPosition;
 
-    private bool GameplayMode = false;
+    private bool GameplayMode = true;
     private LabyrinthContainer mLabyrinthContainer = null;
 
     private void Start()

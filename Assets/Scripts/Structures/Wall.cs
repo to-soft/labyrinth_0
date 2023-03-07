@@ -19,8 +19,8 @@ public class Wall : MonoBehaviour
         }
         torch.SetActive(!noTorches && hasTorch);
      
-        Debug.Log($"WALL: Orientation: {o}");
-        Debug.Log($"WALL: Initial position: {transform.position}");
+        // Debug.Log($"WALL: Orientation: {o}");
+        // Debug.Log($"WALL: Initial position: {transform.position}");
         
         switch (o)
         {
@@ -41,6 +41,6 @@ public class Wall : MonoBehaviour
                 transform.rotation = Quaternion.Euler(0, 270, 0);
                 break;
         }
-        Debug.Log($"WALL: Final position: {transform.position}");
+        // Debug.Log($"WALL: Final position: {transform.position}");
     }
 }
