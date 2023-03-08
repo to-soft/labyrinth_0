@@ -48,8 +48,9 @@ MonoBehaviour:
   fullRandom: 0
   randomSeed: 1
   floor: {fileID: 6314508455781849596, guid: 43219e2742c42446d9e6bc30c6e5feef, type: 3}
-  wall: {fileID: 4523531970667639039, guid: 66d0601699a594790889576703e5f516, type: 3}
+  wall: {fileID: 8727059300355150762, guid: 66d0601699a594790889576703e5f516, type: 3}
   ceiling: {fileID: 657422849276368779, guid: c8697bc0651bd42d083df0a7209d15bb, type: 3}
+  ramp: {fileID: 3175363762245298303, guid: 566dcef96cd47369989cc9fffadeb984, type: 3}
   rampRight: {fileID: 2581154398194316238, guid: 8f98c958aebab4b0492ea81cbd9ffc1a, type: 3}
   rampLeft: {fileID: 6974287730147692455, guid: 30654b373aec64db69ce32856104504e, type: 3}
   rampFront: {fileID: 5165582200413100050, guid: 5e6297884890a4af499e671582c7a2e1, type: 3}
@@ -61,5 +62,5 @@ MonoBehaviour:
   cellWidth: 3
   cellHeight: 3
   cellDepth: 3
-  entrance: 1
+  entranceColumn: 0
   goalPrefab: {fileID: 0}

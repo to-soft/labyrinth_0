@@ -17,12 +17,8 @@ public class ItemObject : MonoBehaviour
 
     private void Awake()
     {
-        Debug.Log("ItemObject Awake():");
         _player = GameObject.FindGameObjectWithTag("PlayerBody");
         _playerTransform = _player.transform;
-        Debug.Log("Player and transform:");
-        Debug.Log(_player);
-        Debug.Log(_playerTransform);
     }
 
     private void Update()
@@ -43,7 +39,7 @@ public class ItemObject : MonoBehaviour
         if (other.gameObject.CompareTag("PlayerBody"))
         {
             
-            Debug.Log(ItemName + " touched by player");
+            // Debug.Log(ItemName + " touched by player");
             OnHandlePickupItem();
         }
     }
@@ -69,7 +65,7 @@ public class ItemObject : MonoBehaviour
 
     public void OnDropItem()
     {
-        Debug.Log(ItemName + " detached from player...");
+        // Debug.Log(ItemName + " detached from player...");
         var o = gameObject;
         _attachedToPlayer = false;
         o.transform.position = (_playerTransform.position + _playerTransform.forward * 1.75f);

@@ -33,8 +33,8 @@ public class Door : MonoBehaviour
         lowerDoorOpenRotation = lowerDoorClosedRotation * Quaternion.Euler(0, -70, 0);
         lowerDoorOpenPosition = new Vector3(lowerDoor.position.x, 0, lowerDoor.position.z);
         
-        Debug.Log($"upper door closed rotation: {upperDoorClosedRotation}");
-        Debug.Log($"upper door open rotation: {upperDoorOpenRotation}");
+        // Debug.Log($"upper door closed rotation: {upperDoorClosedRotation}");
+        // Debug.Log($"upper door open rotation: {upperDoorOpenRotation}");
     }
 
     private void FixedUpdate()

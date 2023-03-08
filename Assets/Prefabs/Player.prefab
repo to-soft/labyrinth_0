@@ -435,8 +435,8 @@ GameObject:
   - component: {fileID: 5067841419248476212}
   - component: {fileID: 4846752748271216105}
   - component: {fileID: 4571507863415113234}
-  - component: {fileID: 5535732927431837774}
   - component: {fileID: 5543335494998045287}
+  - component: {fileID: 5347705751472658589}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -459,7 +459,7 @@ Transform:
   - {fileID: 8389593539210426649}
   - {fileID: 9155769930817905352}
   m_Father: {fileID: 0}
-  m_RootOrder: 1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 37.878, z: 0}
 --- !u!54 &4846752748271216105
 Rigidbody:
@@ -511,7 +511,15 @@ MonoBehaviour:
     m_Bits: 64
   JumpKey: 32
   playerPrefab: {fileID: 8389593539210426649}
---- !u!114 &5535732927431837774
+--- !u!81 &5543335494998045287
+AudioListener:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8105994742426170684}
+  m_Enabled: 1
+--- !u!114 &5347705751472658589
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -526,11 +534,5 @@ MonoBehaviour:
   health: 10
   playerObject: {fileID: 1773012328598565377}
   nearestRespawn: {fileID: 0}
---- !u!81 &5543335494998045287
-AudioListener:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8105994742426170684}
-  m_Enabled: 1
+  _row: 0
+  _story: 0

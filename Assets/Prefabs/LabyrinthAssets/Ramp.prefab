@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &6314508455781849596
+--- !u!1 &3175363762245298303
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,37 +8,51 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 9184201217357024240}
+  - component: {fileID: 5437694942392129872}
+  - component: {fileID: 1123395519834045738}
   m_Layer: 0
-  m_Name: Floor
+  m_Name: Ramp
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &9184201217357024240
+--- !u!4 &5437694942392129872
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6314508455781849596}
+  m_GameObject: {fileID: 3175363762245298303}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 3, y: 0, z: 3}
-  m_LocalScale: {x: 2, y: 1, z: 2}
+  m_LocalPosition: {x: 3, y: 2.95, z: 3}
+  m_LocalScale: {x: 2, y: 1.15, z: 2}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 286860666653442568}
+  - {fileID: 4023980863369504981}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1001 &320207734166545891
+--- !u!114 &1123395519834045738
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3175363762245298303}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 20c013d409f3437fa0734f0dbb5e41e3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  floor: {fileID: 4365076464747131503}
+--- !u!1001 &3482043627518463806
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 9184201217357024240}
+    m_TransformParent: {fileID: 5437694942392129872}
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: 1ec51b290642e4f369bffd9f67bc5f58, type: 3}
       propertyPath: m_RootOrder
@@ -46,7 +60,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 1ec51b290642e4f369bffd9f67bc5f58, type: 3}
       propertyPath: m_LocalScale.x
-      value: 0.965
+      value: 0.95
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 1ec51b290642e4f369bffd9f67bc5f58, type: 3}
       propertyPath: m_LocalScale.y
@@ -115,25 +129,25 @@ PrefabInstance:
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 1ec51b290642e4f369bffd9f67bc5f58, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 5493965541812303345}
+      addedObject: {fileID: 2392156295751200226}
   m_SourcePrefab: {fileID: 100100000, guid: 1ec51b290642e4f369bffd9f67bc5f58, type: 3}
---- !u!4 &286860666653442568 stripped
+--- !u!4 &4023980863369504981 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 1ec51b290642e4f369bffd9f67bc5f58, type: 3}
-  m_PrefabInstance: {fileID: 320207734166545891}
+  m_PrefabInstance: {fileID: 3482043627518463806}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &626267448954935474 stripped
+--- !u!1 &4365076464747131503 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 1ec51b290642e4f369bffd9f67bc5f58, type: 3}
-  m_PrefabInstance: {fileID: 320207734166545891}
+  m_PrefabInstance: {fileID: 3482043627518463806}
   m_PrefabAsset: {fileID: 0}
---- !u!65 &5493965541812303345
+--- !u!65 &2392156295751200226
 BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 626267448954935474}
+  m_GameObject: {fileID: 4365076464747131503}
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
@@ -146,5 +160,5 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 3.1359994, y: 2.5760005, z: 0.27067822}
-  m_Center: {x: -1.3199999, y: 1.1200002, z: 0.00084669143}
+  m_Size: {x: 3.1031358, y: 2.5543377, z: 0.25662485}
+  m_Center: {x: -1.3234249, y: 1.1170923, z: 0.000032388332}

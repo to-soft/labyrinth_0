@@ -9,6 +9,7 @@ TagManager:
   - Anchor
   - PlayerBody
   - RespawnPoint
+  - Labyrinth
   layers:
   - Default
   - TransparentFX

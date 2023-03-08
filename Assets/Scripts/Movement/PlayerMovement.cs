@@ -6,19 +6,16 @@ using UnityEngine.Serialization;
 
 public class PlayerMovement : MonoBehaviour
 {
-    public Transform playerPrefab;
-
     [Header("Movement")]
     public float moveSpeed;
     public float groundDrag;
-
 
     [Header("Jump Controls")] 
     public float jumpForce;
     public float jumpCooldown;
     public float airMultiplier;
     private bool canJump;
-
+    
     [Header("Ground Check")] 
     public float playerHeight;
     public LayerMask whatIsGround;
@@ -27,6 +24,7 @@ public class PlayerMovement : MonoBehaviour
     [Header("Keybinds")] 
     public KeyCode JumpKey = KeyCode.Space;
 
+    public Transform playerPrefab;
     private bool uiOpen;
     private float horizontalInput;
     private float verticalInput;

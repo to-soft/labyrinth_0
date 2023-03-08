@@ -23,9 +23,9 @@ public class ViewManager : MonoBehaviour
 
     public static void SetIsOpen()
     {
-        Debug.Log($"Setting isOpen from {isOpen} to...");
+        // Debug.Log($"Setting isOpen from {isOpen} to...");
         isOpen = _instance._currentView;
-        Debug.Log($"... {isOpen}");
+        // Debug.Log($"... {isOpen}");
     }
 
     public static void Show<T>(bool remember = true) where T : View
