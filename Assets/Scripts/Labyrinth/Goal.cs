@@ -13,7 +13,7 @@ public class Goal : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.CompareTag("PlayerBody"))
+        if (other.gameObject.CompareTag("Player"))
         {
             Debug.Log("Player reached goal prefab...");
             ViewManager.Show(_victoryMenuView, false);

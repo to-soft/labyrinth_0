@@ -136,6 +136,7 @@ GameObject:
   - component: {fileID: 6345909685880666272}
   - component: {fileID: 7816311873878386592}
   - component: {fileID: 9105697778111826968}
+  - component: {fileID: 6295959199384789480}
   m_Layer: 0
   m_Name: LogariusWheelPlayer
   m_TagString: Player
@@ -158,7 +159,7 @@ Transform:
   - {fileID: 5287996366881099801}
   - {fileID: 6960277798648908628}
   m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!54 &6345909685880666272
 Rigidbody:
@@ -220,10 +221,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 73916782e4b4b3559922a498a0a3bc21, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  strength: 0.5
+  strength: 0.1
   friction: 0.1
   jumpHeight: 5
   cameraPivot: {fileID: 1485467329710491489}
+--- !u!114 &6295959199384789480
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3446452906474421657}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe72321959c94b9393f70e5c1cb03fd0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  health: 10
+  playerObject: {fileID: 4767460432756689571}
+  nearestRespawn: {fileID: 0}
 --- !u!1001 &5685800923742107634
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -289,6 +305,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a0b15812a3ab3ce88ba3360dd183be8f, type: 3}
+--- !u!1 &4767460432756689571 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: a0b15812a3ab3ce88ba3360dd183be8f, type: 3}
+  m_PrefabInstance: {fileID: 5685800923742107634}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &5287996366881099801 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: a0b15812a3ab3ce88ba3360dd183be8f, type: 3}

@@ -1,7 +1,3 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using Unity.Mathematics;
 using UnityEngine;
 
 public class Door : MonoBehaviour
@@ -75,7 +71,7 @@ public class Door : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.CompareTag("PlayerBody"))
+        if (other.gameObject.CompareTag("Player"))
         {
             Debug.Log("Door zone touched by player");
             isOpen = true;
@@ -84,7 +80,7 @@ public class Door : MonoBehaviour
 
     private void OnTriggerExit(Collider other)
     {
-        if (other.gameObject.CompareTag("PlayerBody"))
+        if (other.gameObject.CompareTag("Player"))
         {
             Debug.Log("Door zone left by player");
             isOpen = false;
