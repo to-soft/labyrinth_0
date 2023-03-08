@@ -2,17 +2,6 @@ using System;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
-public enum PossibleDirection
-{
-    Start,
-    Right,
-    Front,
-    Left,
-    Back,
-    Down,
-    Up,
-}
-
 public class LabyrinthGenerator : LabyrinthContainer
 {
     public LabyrinthGenerator(int rows, int columns, int stories) : base(rows, columns, stories)
@@ -200,6 +189,11 @@ public class LabyrinthGenerator : LabyrinthContainer
     //     }
     // }
 
+    private void SealLostCell(LabyrinthCell cell)
+    {
+        
+    }
+
     private void RepairLabyrinth()
     {
         for (int story = 0; story < StoryCount; story++)
@@ -214,17 +208,16 @@ public class LabyrinthGenerator : LabyrinthContainer
                     if (!cell.IsVisited)
                     {
                         // Debug.Log($"filling in cell: x{column} y{story} z{row}");
-                        cell.WallFront = cell.WallRight = cell.WallLeft = cell.Ceiling = cell.Floor = true;
-                        if (!HasWall(cell, Direction.Back))
-                        {
-                            cell.WallBack = true;
-                        }
+                        cell.WallFront = cell.WallRight = cell.Ceiling = true;
+                        if (!HasWall(cell, Direction.Back) || row == 0) { cell.WallBack = true; }
+                        if (!HasWall(cell, Direction.Left) || column == 0) { cell.WallLeft = true; }
+                        if (!HasWall(cell, Direction.Down) || story == 0) { cell.Floor = true; }
                     }
                     else
                     {
                         cell.IsVisited = false;
                     }
-                        
+                    
                     // remove overlapping walls between neighbor cells
                     if (cell.WallFront && row + 1 < RowCount)
                     {

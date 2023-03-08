@@ -17,6 +17,7 @@ public class LabyrinthSpawner : MonoBehaviour
     }
 
     public LabyrinthGenerationAlgorithm algorithm = LabyrinthGenerationAlgorithm.PureRecursive;
+    public bool GameplayMode = false;
     public bool fullRandom = false;
     public int randomSeed = 12345;
     
@@ -41,8 +42,7 @@ public class LabyrinthSpawner : MonoBehaviour
     private Vector3 _rampPosition;
     private Vector3 _floorPosition;
     private Vector3 _ceilingPosition;
-
-    private bool GameplayMode = true;
+    
     private LabyrinthContainer mLabyrinthContainer = null;
 
     private void Start()
