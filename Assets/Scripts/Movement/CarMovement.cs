@@ -70,8 +70,6 @@ public class WheelSettings
     public float dampingRate = 0.25f;
     public float suspensionDistance = 0;
     public float forceAppPointDistance = 0;
-    public float staticFriction = 1;
-    public float dynamicFriction = 1;
     public Vector3 center = Vector3.zero;
     public Spring suspensionSpring;
     public ForwardFriction forwardFriction;
@@ -81,12 +79,11 @@ public class WheelSettings
     {
         wheel.mass = mass / 2;
         wheel.radius = radius;
+        wheel.center = center;
         wheel.wheelDampingRate = dampingRate;
         wheel.suspensionDistance = suspensionDistance;
         wheel.forceAppPointDistance = forceAppPointDistance;
-        wheel.center = center;
-        wheel.material.staticFriction = staticFriction;
-        wheel.material.dynamicFriction = dynamicFriction;
+        
         JointSpring spring = wheel.suspensionSpring;
         spring.spring = suspensionSpring.spring;
         spring.damper = suspensionSpring.damper;
@@ -100,6 +97,7 @@ public class WheelSettings
         forward.asymptoteValue = forwardFriction.asymptoteForce;
         forward.stiffness = forwardFriction.stiffness;
         wheel.forwardFriction = forward;
+        
         WheelFrictionCurve sideways = wheel.sidewaysFriction;
         sideways.extremumSlip = sidewaysFriction.extrenumSlip;
         sideways.extremumValue = sidewaysFriction.extrenumForce;
