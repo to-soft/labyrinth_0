@@ -5,6 +5,8 @@ public static class LabyrinthState
     public static int columns { get; set; }
     public static int stories { get; set; }
     
+    public static int pathLength { get; set; }
+    
     public static LabyrinthCell[,,] LabyrinthMap;
 
     public static LabyrinthCell GetLabyrinthCellMap(int row, int column, int story)

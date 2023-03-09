@@ -2,17 +2,6 @@ using System;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
-public enum PossibleDirection
-{
-    Start,
-    Right,
-    Front,
-    Left,
-    Back,
-    Down,
-    Up,
-}
-
 public class LabyrinthGenerator : LabyrinthContainer
 {
     public LabyrinthGenerator(int rows, int columns, int stories) : base(rows, columns, stories)
@@ -31,6 +20,7 @@ public class LabyrinthGenerator : LabyrinthContainer
         VisitCell(0, startingColumn, 0, 
             Direction.Start, GetLabyrinthCell(0, startingColumn, 0), Direction.Base);
         Debug.Log($"Longest path: {furthestDistance}; setting goal...");
+        LabyrinthState.pathLength = furthestDistance;
         StudyLabyrinth();
         RepairLabyrinth();
         SolveLabyrinth();
