@@ -52,40 +52,71 @@ public class CarMovement : MonoBehaviour
 [System.Serializable]
 public class WheelSettings
 {
-    public float mass;
-    public float dampingRate;
-    public float suspensionDistance;
-    // public JointSpring suspensionSpring;
-    public Friction forwardFriction;
-    public Friction sidewaysFriction;
+    public float mass = 200;
+    public float radius = 0.7f;
+    public float dampingRate = 0.25f;
+    public float suspensionDistance = 0;
+    public float forceAppPointDistance = 0;
+    public Vector3 center = Vector3.zero;
+    public Spring suspensionSpring;
+    public ForwardFriction forwardFriction;
+    public SidewaysFriction sidewaysFriction;
 
     public void applyToWheel(WheelCollider wheel)
     {
         wheel.mass = mass / 2;
+        wheel.radius = radius;
         wheel.wheelDampingRate = dampingRate;
         wheel.suspensionDistance = suspensionDistance;
-        // wheel.suspensionSpring = suspensionSpring;
+        wheel.forceAppPointDistance = forceAppPointDistance;
+        wheel.center = center;
+        JointSpring spring = wheel.suspensionSpring;
+        spring.spring = suspensionSpring.spring;
+        spring.damper = suspensionSpring.damper;
+        spring.targetPosition = suspensionSpring.targetPosition;
+        wheel.suspensionSpring = spring;
+        
         WheelFrictionCurve forward = wheel.forwardFriction;
         forward.extremumSlip = forwardFriction.extrenumSlip;
         forward.extremumValue = forwardFriction.extrenumForce;
         forward.asymptoteSlip = forwardFriction.asymptoteSlip;
         forward.asymptoteValue = forwardFriction.asymptoteForce;
+        forward.stiffness = forwardFriction.stiffness;
         wheel.forwardFriction = forward;
         WheelFrictionCurve sideways = wheel.sidewaysFriction;
-        forward.extremumSlip = sidewaysFriction.extrenumSlip;
-        forward.extremumValue = sidewaysFriction.extrenumForce;
-        forward.asymptoteSlip = sidewaysFriction.asymptoteSlip;
-        forward.asymptoteValue = sidewaysFriction.asymptoteForce;
+        sideways.extremumSlip = sidewaysFriction.extrenumSlip;
+        sideways.extremumValue = sidewaysFriction.extrenumForce;
+        sideways.asymptoteSlip = sidewaysFriction.asymptoteSlip;
+        sideways.asymptoteValue = sidewaysFriction.asymptoteForce;
+        sideways.stiffness = sidewaysFriction.stiffness;
         wheel.sidewaysFriction = sideways;
     }
 }
 
 [System.Serializable]
-public class Friction
+public class Spring
 {
-    public float extrenumSlip;
-    public float extrenumForce;
-    public float asymptoteSlip;
-    public float asymptoteForce;
-    public float stiffness;
+    public float spring = 35000;
+    public float damper = 4500;
+    public float targetPosition = 0.5f;
+}
+
+[System.Serializable]
+public class ForwardFriction
+{
+    public float extrenumSlip = 0.1f;
+    public float extrenumForce = 1f;
+    public float asymptoteSlip = 2;
+    public float asymptoteForce = 0.5f;
+    public float stiffness = 5;
+}
+
+[System.Serializable]
+public class SidewaysFriction
+{
+    public float extrenumSlip = 0.2f;
+    public float extrenumForce = 1f;
+    public float asymptoteSlip = 0.5f;
+    public float asymptoteForce = 0.75f;
+    public float stiffness = 1;
 }

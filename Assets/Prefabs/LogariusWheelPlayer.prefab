@@ -236,14 +236,33 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e4e74908dc98961fea629a3838096533, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  lwheel: {fileID: 0}
-  rwheel: {fileID: 0}
+  lwheel: {fileID: 2345359207032543665}
+  rwheel: {fileID: 5526721862255010800}
   maxMotorTorque: 1000
   maxSteeringAngle: 30
   wheelSettings:
-    Mass: 0
-    DampingRate: 0
-    SuspensionDistance: 0
+    mass: 200
+    radius: 0.7
+    dampingRate: 0.25
+    suspensionDistance: 0
+    forceAppPointDistance: 0
+    center: {x: 0, y: 0, z: 0}
+    suspensionSpring:
+      spring: 35000
+      damper: 4500
+      targetPosition: 0.5
+    forwardFriction:
+      extrenumSlip: 0.1
+      extrenumForce: 1
+      asymptoteSlip: 2
+      asymptoteForce: 0.5
+      stiffness: 5
+    sidewaysFriction:
+      extrenumSlip: 0.2
+      extrenumForce: 1
+      asymptoteSlip: 0.5
+      asymptoteForce: 0.75
+      stiffness: 1
 --- !u!1001 &5685800923742107634
 PrefabInstance:
   m_ObjectHideFlags: 0
