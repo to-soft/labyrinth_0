@@ -70,6 +70,8 @@ public class WheelSettings
     public float dampingRate = 0.25f;
     public float suspensionDistance = 0;
     public float forceAppPointDistance = 0;
+    public float staticFriction = 1;
+    public float dynamicFriction = 1;
     public Vector3 center = Vector3.zero;
     public Spring suspensionSpring;
     public ForwardFriction forwardFriction;
@@ -83,6 +85,8 @@ public class WheelSettings
         wheel.suspensionDistance = suspensionDistance;
         wheel.forceAppPointDistance = forceAppPointDistance;
         wheel.center = center;
+        wheel.material.staticFriction = staticFriction;
+        wheel.material.dynamicFriction = dynamicFriction;
         JointSpring spring = wheel.suspensionSpring;
         spring.spring = suspensionSpring.spring;
         spring.damper = suspensionSpring.damper;
@@ -117,7 +121,7 @@ public class Spring
 [System.Serializable]
 public class ForwardFriction
 {
-    public float extrenumSlip = 0.1f;
+    public float extrenumSlip = 1f;
     public float extrenumForce = 1f;
     public float asymptoteSlip = 2;
     public float asymptoteForce = 0.5f;
