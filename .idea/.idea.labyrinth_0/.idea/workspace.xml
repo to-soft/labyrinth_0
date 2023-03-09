@@ -3,7 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="7c4c6207-7dee-4ede-8d95-92224433f65e" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.labyrinth_0/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.labyrinth_0/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Movement/CharacterMovement.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Movement/CharacterMovement.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Movement/CarMovement.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Movement/CarMovement.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -102,7 +102,7 @@
       <workItem from="1677542770153" duration="15127000" />
       <workItem from="1677730826806" duration="8697000" />
       <workItem from="1678332260351" duration="2000" />
-      <workItem from="1678332298781" duration="1824000" />
+      <workItem from="1678332298781" duration="3637000" />
     </task>
     <servers />
   </component>

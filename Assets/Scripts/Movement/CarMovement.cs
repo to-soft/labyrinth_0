@@ -1,18 +1,22 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class CarMovement : MonoBehaviour
 {
-    public Axle axle;
+    public WheelCollider lwheel;
+    public WheelCollider rwheel;
     public float maxMotorTorque;
     public float maxSteeringAngle;
+    public WheelSettings wheelSettings;
 
 
     // Start is called before the first frame update
     void Start()
     {
-
+        wheelSettings.applyToWheel(lwheel);
+        wheelSettings.applyToWheel(rwheel);
     }
 
     public void applyPositionToWheel(WheelCollider collider)
@@ -33,21 +37,35 @@ public class CarMovement : MonoBehaviour
         float motor = maxMotorTorque * Input.GetAxis("Vertical");
         float steering = maxSteeringAngle * Input.GetAxis("Horizontal");
         
-        axle.lwheel.steerAngle = steering;
-        axle.rwheel.steerAngle = steering;
-        axle.lwheel.motorTorque = motor;
-        axle.rwheel.motorTorque = motor;
+        lwheel.steerAngle = steering;
+        rwheel.steerAngle = steering;
+        lwheel.motorTorque = motor;
+        rwheel.motorTorque = motor;
         
-        applyPositionToWheel(axle.lwheel);
-        applyPositionToWheel(axle.rwheel);
+        applyPositionToWheel(lwheel);
+        applyPositionToWheel(rwheel);
         
     }
 }
 
 
 [System.Serializable]
-public class Axle
+public class WheelSettings
 {
-    public WheelCollider lwheel;
-    public WheelCollider rwheel;
+    public float Mass;
+    public float DampingRate;
+    public float SuspensionDistance;
+    public JointSpring SuspensionSpring;
+    public WheelFrictionCurve ForwardFriction;
+    public WheelFrictionCurve SidewaysFriction;
+
+    public void applyToWheel(WheelCollider wheel)
+    {
+        wheel.mass = Mass / 2;
+        wheel.wheelDampingRate = DampingRate;
+        wheel.suspensionDistance = SuspensionDistance;
+        wheel.suspensionSpring = SuspensionSpring;
+        wheel.forwardFriction = ForwardFriction;
+        wheel.sidewaysFriction = SidewaysFriction;
+    }
 }

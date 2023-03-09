@@ -135,8 +135,8 @@ GameObject:
   - component: {fileID: 1459221891439143530}
   - component: {fileID: 6345909685880666272}
   - component: {fileID: 7816311873878386592}
-  - component: {fileID: 9105697778111826968}
   - component: {fileID: 6295959199384789480}
+  - component: {fileID: 8574839608448019610}
   m_Layer: 0
   m_Name: LogariusWheelPlayer
   m_TagString: Player
@@ -159,7 +159,7 @@ Transform:
   - {fileID: 5287996366881099801}
   - {fileID: 6960277798648908628}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: 15
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!54 &6345909685880666272
 Rigidbody:
@@ -169,7 +169,7 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3446452906474421657}
   serializedVersion: 4
-  m_Mass: 5
+  m_Mass: 100
   m_Drag: 0
   m_AngularDrag: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}
@@ -186,7 +186,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 0
+  m_Constraints: 80
   m_CollisionDetection: 0
 --- !u!65 &7816311873878386592
 BoxCollider:
@@ -207,24 +207,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.4, y: 1.4, z: 1.4}
+  m_Size: {x: 0.4, y: 0.7, z: 0.7}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &9105697778111826968
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3446452906474421657}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 73916782e4b4b3559922a498a0a3bc21, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  strength: 0.1
-  friction: 0.1
-  jumpHeight: 5
-  cameraPivot: {fileID: 1485467329710491489}
 --- !u!114 &6295959199384789480
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -240,6 +224,26 @@ MonoBehaviour:
   health: 10
   playerObject: {fileID: 4767460432756689571}
   nearestRespawn: {fileID: 0}
+--- !u!114 &8574839608448019610
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3446452906474421657}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e4e74908dc98961fea629a3838096533, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  lwheel: {fileID: 0}
+  rwheel: {fileID: 0}
+  maxMotorTorque: 1000
+  maxSteeringAngle: 30
+  wheelSettings:
+    Mass: 0
+    DampingRate: 0
+    SuspensionDistance: 0
 --- !u!1001 &5685800923742107634
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -292,6 +296,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 802624532020792151, guid: a0b15812a3ab3ce88ba3360dd183be8f, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: a0b15812a3ab3ce88ba3360dd183be8f, type: 3}
       propertyPath: m_Name
       value: LogariusWheel
@@ -303,8 +311,58 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 4401297455567457124, guid: a0b15812a3ab3ce88ba3360dd183be8f, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2345359207032543665}
+    - targetCorrespondingSourceObject: {fileID: -2830091599030494439, guid: a0b15812a3ab3ce88ba3360dd183be8f, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 5526721862255010800}
   m_SourcePrefab: {fileID: 100100000, guid: a0b15812a3ab3ce88ba3360dd183be8f, type: 3}
+--- !u!1 &1608202330136915179 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: -2830091599030494439, guid: a0b15812a3ab3ce88ba3360dd183be8f, type: 3}
+  m_PrefabInstance: {fileID: 5685800923742107634}
+  m_PrefabAsset: {fileID: 0}
+--- !u!146 &5526721862255010800
+WheelCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1608202330136915179}
+  serializedVersion: 2
+  m_Center: {x: 0, y: 0, z: 0}
+  m_Radius: 0.7
+  m_SuspensionSpring:
+    spring: 35000
+    damper: 4500
+    targetPosition: 0.5
+  m_SuspensionDistance: 0
+  m_ForceAppPointDistance: 0
+  m_Mass: 200
+  m_WheelDampingRate: 0.25
+  m_ForwardFriction:
+    m_ExtremumSlip: 0.01
+    m_ExtremumValue: 1
+    m_AsymptoteSlip: 2
+    m_AsymptoteValue: 0.5
+    m_Stiffness: 5
+  m_SidewaysFriction:
+    m_ExtremumSlip: 0.2
+    m_ExtremumValue: 1
+    m_AsymptoteSlip: 0.5
+    m_AsymptoteValue: 0.75
+    m_Stiffness: 1
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_Enabled: 1
+  m_ProvidesContacts: 0
 --- !u!1 &4767460432756689571 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: a0b15812a3ab3ce88ba3360dd183be8f, type: 3}
@@ -315,3 +373,47 @@ Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: a0b15812a3ab3ce88ba3360dd183be8f, type: 3}
   m_PrefabInstance: {fileID: 5685800923742107634}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &8357706087168851094 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4401297455567457124, guid: a0b15812a3ab3ce88ba3360dd183be8f, type: 3}
+  m_PrefabInstance: {fileID: 5685800923742107634}
+  m_PrefabAsset: {fileID: 0}
+--- !u!146 &2345359207032543665
+WheelCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8357706087168851094}
+  serializedVersion: 2
+  m_Center: {x: 0, y: 0, z: 0}
+  m_Radius: 0.7
+  m_SuspensionSpring:
+    spring: 35000
+    damper: 4500
+    targetPosition: 0.5
+  m_SuspensionDistance: 0
+  m_ForceAppPointDistance: 0
+  m_Mass: 200
+  m_WheelDampingRate: 0.25
+  m_ForwardFriction:
+    m_ExtremumSlip: 0.01
+    m_ExtremumValue: 1
+    m_AsymptoteSlip: 2
+    m_AsymptoteValue: 0.5
+    m_Stiffness: 5
+  m_SidewaysFriction:
+    m_ExtremumSlip: 0.2
+    m_ExtremumValue: 1
+    m_AsymptoteSlip: 0.5
+    m_AsymptoteValue: 0.75
+    m_Stiffness: 1
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_Enabled: 1
+  m_ProvidesContacts: 0
