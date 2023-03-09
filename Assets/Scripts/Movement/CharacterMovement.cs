@@ -15,8 +15,10 @@ public class CharacterMovement : MonoBehaviour
     private float cameraRotateX = 0f;
     private bool isGrounded = false;
     private Rigidbody _rigidbody;
-    // private Animator animator;
-    private BoxCollider _collider;
+    // private WheelCollider _collider;
+    private WheelCollider _lCollider;
+    private WheelCollider _rCollider;
+    // private BoxCollider _collider;
     private float _width;
     private float _radius;
     private float _radiusPi;
@@ -38,13 +40,19 @@ public class CharacterMovement : MonoBehaviour
         _rwheel = _wheel.transform.GetChild(1);
 
         _rigidbody = GetComponent<Rigidbody>();
-        _collider = GetComponent<BoxCollider>();
+        _lCollider = _lwheel.gameObject.GetComponent<WheelCollider>();
+        _rCollider = _rwheel.gameObject.GetComponent<WheelCollider>();
+        // _collider = GetComponent<BoxCollider>();
         
         // get dimensions
-        var dimensions = _collider.size;
-        _radius = dimensions.y / 2;
-        _width = dimensions.x;
+        _radius = _lCollider.radius; // dimensions.y / 2;
+        _width = _rwheel.position.x - _lwheel.position.x;
         _radiusPi = _radius * Mathf.PI;
+        
+        // var dimensions = _collider.size;
+        // _radius = dimensions.y / 2;
+        // _width = dimensions.x;
+        // _radiusPi = _radius * Mathf.PI;
 
         // hide the mouse cursor
         // Press Esc during play to show the cursor
@@ -64,21 +72,22 @@ public class CharacterMovement : MonoBehaviour
     {
         // get time change
         float dt = Time.deltaTime;
-        
+                
         // get input values for frame
-        float leftInput = Input.GetAxis("Left");
-        float rightInput = Input.GetAxis("Right");
         
-        if (leftInput != 0) applyForce(strength * leftInput, Wheel.left);
-        if (rightInput != 0) applyForce(strength * rightInput, Wheel.right);
-        
-        if (_lvel != 0) applyForce(getFriction(Wheel.left), Wheel.left);
-        if (_rvel != 0) applyForce(getFriction(Wheel.right), Wheel.right);
-
-        updateVelocities();
-
-        updateWheelRotation(Wheel.left, Wheel.right, dt);
-        updateWheelRotation(Wheel.right, Wheel.left, dt);
+        // float leftInput = Input.GetAxis("Left");
+        // float rightInput = Input.GetAxis("Right");
+        //
+        // if (leftInput != 0) applyForce(strength * leftInput, Wheel.left);
+        // if (rightInput != 0) applyForce(strength * rightInput, Wheel.right);
+        //
+        // if (_lvel != 0) applyForce(getFriction(Wheel.left), Wheel.left);
+        // if (_rvel != 0) applyForce(getFriction(Wheel.right), Wheel.right);
+        //
+        // updateVelocities();
+        //
+        // updateWheelRotation(Wheel.left, Wheel.right, dt);
+        // updateWheelRotation(Wheel.right, Wheel.left, dt);
         
         cameraPivot.transform.localRotation = Quaternion.Euler(transform.localRotation.y, 0, 0);
 
@@ -86,13 +95,13 @@ public class CharacterMovement : MonoBehaviour
         CheckGround();
 
         // jump behaviour
-        if (Input.GetButton("Jump") && isGrounded)
-            _rigidbody.velocity = new Vector3(0, jumpHeight, 0);
+        // if (Input.GetButton("Jump") && isGrounded)
+            // _rigidbody.velocity = new Vector3(0, jumpHeight, 0);
     }
     
     void applyForce(float force, Wheel wheel)
     {
-        float f = force / _rigidbody.mass;
+        float f = force / _lCollider.mass;
         if (wheel == Wheel.right) _racc += f;
         if (wheel == Wheel.left) _lacc += f;
     }
@@ -125,8 +134,7 @@ public class CharacterMovement : MonoBehaviour
 
     void CheckGround()
     {
-        Physics.Raycast(_collider.bounds.center, Vector3.down, out var hit);
+        Physics.Raycast(_lCollider.bounds.center, Vector3.down, out var hit);
         isGrounded = hit.distance < (_radius + 0.1f);
     }
-
 }
