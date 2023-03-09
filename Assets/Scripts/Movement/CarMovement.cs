@@ -52,20 +52,40 @@ public class CarMovement : MonoBehaviour
 [System.Serializable]
 public class WheelSettings
 {
-    public float Mass;
-    public float DampingRate;
-    public float SuspensionDistance;
-    public JointSpring SuspensionSpring;
-    public WheelFrictionCurve ForwardFriction;
-    public WheelFrictionCurve SidewaysFriction;
+    public float mass;
+    public float dampingRate;
+    public float suspensionDistance;
+    // public JointSpring suspensionSpring;
+    public Friction forwardFriction;
+    public Friction sidewaysFriction;
 
     public void applyToWheel(WheelCollider wheel)
     {
-        wheel.mass = Mass / 2;
-        wheel.wheelDampingRate = DampingRate;
-        wheel.suspensionDistance = SuspensionDistance;
-        wheel.suspensionSpring = SuspensionSpring;
-        wheel.forwardFriction = ForwardFriction;
-        wheel.sidewaysFriction = SidewaysFriction;
+        wheel.mass = mass / 2;
+        wheel.wheelDampingRate = dampingRate;
+        wheel.suspensionDistance = suspensionDistance;
+        // wheel.suspensionSpring = suspensionSpring;
+        WheelFrictionCurve forward = wheel.forwardFriction;
+        forward.extremumSlip = forwardFriction.extrenumSlip;
+        forward.extremumValue = forwardFriction.extrenumForce;
+        forward.asymptoteSlip = forwardFriction.asymptoteSlip;
+        forward.asymptoteValue = forwardFriction.asymptoteForce;
+        wheel.forwardFriction = forward;
+        WheelFrictionCurve sideways = wheel.sidewaysFriction;
+        forward.extremumSlip = sidewaysFriction.extrenumSlip;
+        forward.extremumValue = sidewaysFriction.extrenumForce;
+        forward.asymptoteSlip = sidewaysFriction.asymptoteSlip;
+        forward.asymptoteValue = sidewaysFriction.asymptoteForce;
+        wheel.sidewaysFriction = sideways;
     }
+}
+
+[System.Serializable]
+public class Friction
+{
+    public float extrenumSlip;
+    public float extrenumForce;
+    public float asymptoteSlip;
+    public float asymptoteForce;
+    public float stiffness;
 }
