@@ -139,6 +139,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemName: Mars
   referenceItem: {fileID: 11400000, guid: ad0e71cf8366cddcdb2ea7219eb7cbda, type: 2}
+--- !u!146 &107194594 stripped
+WheelCollider:
+  m_CorrespondingSourceObject: {fileID: 5526721862255010800, guid: 6a09375b80ee5f6edbe599bc9a1ebb01, type: 3}
+  m_PrefabInstance: {fileID: 1647295307}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &119619636
 GameObject:
   m_ObjectHideFlags: 0
@@ -1190,6 +1195,11 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
+--- !u!146 &857484345 stripped
+WheelCollider:
+  m_CorrespondingSourceObject: {fileID: 2345359207032543665, guid: 6a09375b80ee5f6edbe599bc9a1ebb01, type: 3}
+  m_PrefabInstance: {fileID: 1647295307}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &908752030
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2188,29 +2198,25 @@ PrefabInstance:
       propertyPath: m_Name
       value: LogariusWheelPlayer
       objectReference: {fileID: 0}
-    - target: {fileID: 5029248728882576549, guid: 6a09375b80ee5f6edbe599bc9a1ebb01, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 6295959199384789480, guid: 6a09375b80ee5f6edbe599bc9a1ebb01, type: 3}
       propertyPath: nearestRespawn
       value: 
       objectReference: {fileID: 1167992119}
-    - target: {fileID: 6345909685880666272, guid: 6a09375b80ee5f6edbe599bc9a1ebb01, type: 3}
-      propertyPath: m_Mass
-      value: 100
+    - target: {fileID: 8574839608448019610, guid: 6a09375b80ee5f6edbe599bc9a1ebb01, type: 3}
+      propertyPath: lwheel
+      value: 
+      objectReference: {fileID: 857484345}
+    - target: {fileID: 8574839608448019610, guid: 6a09375b80ee5f6edbe599bc9a1ebb01, type: 3}
+      propertyPath: rwheel
+      value: 
+      objectReference: {fileID: 107194594}
+    - target: {fileID: 8574839608448019610, guid: 6a09375b80ee5f6edbe599bc9a1ebb01, type: 3}
+      propertyPath: maxMotorTorque
+      value: 2000
       objectReference: {fileID: 0}
-    - target: {fileID: 6345909685880666272, guid: 6a09375b80ee5f6edbe599bc9a1ebb01, type: 3}
-      propertyPath: m_Constraints
-      value: 80
-      objectReference: {fileID: 0}
-    - target: {fileID: 7816311873878386592, guid: 6a09375b80ee5f6edbe599bc9a1ebb01, type: 3}
-      propertyPath: m_Size.y
-      value: 0.7
-      objectReference: {fileID: 0}
-    - target: {fileID: 7816311873878386592, guid: 6a09375b80ee5f6edbe599bc9a1ebb01, type: 3}
-      propertyPath: m_Size.z
-      value: 0.7
+    - target: {fileID: 8574839608448019610, guid: 6a09375b80ee5f6edbe599bc9a1ebb01, type: 3}
+      propertyPath: wheelSettings.forwardFriction.stiffness
+      value: 10
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

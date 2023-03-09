@@ -8,7 +8,7 @@ public class CarMovement : MonoBehaviour
     public WheelCollider lwheel;
     public WheelCollider rwheel;
     public float maxMotorTorque;
-    public float maxSteeringAngle;
+    public float maxBrakeTorque;
     public WheelSettings wheelSettings;
 
 
@@ -25,8 +25,8 @@ public class CarMovement : MonoBehaviour
 
         Vector3 position;
         Quaternion rotation;
-        collider.GetWorldPose(out position, out rotation);
         // Debug.Log(position);
+        collider.GetWorldPose(out position, out rotation);
         wheel.position = position;
         wheel.rotation = rotation;
     }
@@ -34,13 +34,26 @@ public class CarMovement : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
-        float motor = maxMotorTorque * Input.GetAxis("Vertical");
-        float steering = maxSteeringAngle * Input.GetAxis("Horizontal");
+        float brake = maxBrakeTorque * Input.GetAxis("Brake");
+        float lmotor = maxMotorTorque * Input.GetAxis("Left");
+        float rmotor = maxMotorTorque * Input.GetAxis("Right");
+        float lbrake = maxBrakeTorque * Input.GetAxis("Left Brake");
+        float rbrake = maxBrakeTorque * Input.GetAxis("Right Brake");
         
-        lwheel.steerAngle = steering;
-        rwheel.steerAngle = steering;
-        lwheel.motorTorque = motor;
-        rwheel.motorTorque = motor;
+        // float steering = maxSteeringAngle * Input.GetAxis("Horizontal");
+        //
+        // lwheel.steerAngle = steering;
+        // rwheel.steerAngle = steering;
+        lwheel.motorTorque = lmotor;
+        rwheel.motorTorque = rmotor;
+
+        lwheel.brakeTorque = brake;
+        rwheel.brakeTorque = brake;
+
+        if (lbrake > 0)
+            lwheel.brakeTorque = lbrake;
+        if (rbrake > 0)
+            rwheel.brakeTorque = rbrake;
         
         applyPositionToWheel(lwheel);
         applyPositionToWheel(rwheel);
