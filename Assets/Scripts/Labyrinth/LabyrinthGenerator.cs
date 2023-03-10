@@ -242,7 +242,7 @@ public class LabyrinthGenerator : LabyrinthContainer
     private void SealCell(LabyrinthCell cell)
     {
         // Debug.Log($"filling in cell: x{column} y{story} z{row}");
-        cell.WallFront = cell.WallRight = cell.WallLeft = cell.Ceiling = cell.Floor = true;
+        cell.WallFront = cell.WallRight = cell.Ceiling = true;
         if (!HasWall(cell, Direction.Back) || cell.Row == 0)
         {
             cell.WallBack = true;

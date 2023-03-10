@@ -3264,7 +3264,7 @@ PrefabInstance:
       objectReference: {fileID: 1123395519834045738, guid: 566dcef96cd47369989cc9fffadeb984, type: 3}
     - target: {fileID: 4909495442388787164, guid: 225269a6c8f9ab11fa9116db73ce00d2, type: 3}
       propertyPath: rows
-      value: 7
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 4909495442388787164, guid: 225269a6c8f9ab11fa9116db73ce00d2, type: 3}
       propertyPath: wall
@@ -3272,11 +3272,11 @@ PrefabInstance:
       objectReference: {fileID: 8727059300355150762, guid: 66d0601699a594790889576703e5f516, type: 3}
     - target: {fileID: 4909495442388787164, guid: 225269a6c8f9ab11fa9116db73ce00d2, type: 3}
       propertyPath: columns
-      value: 7
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 4909495442388787164, guid: 225269a6c8f9ab11fa9116db73ce00d2, type: 3}
       propertyPath: stories
-      value: 7
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 4909495442388787164, guid: 225269a6c8f9ab11fa9116db73ce00d2, type: 3}
       propertyPath: cellDepth
