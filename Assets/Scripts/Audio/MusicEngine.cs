@@ -24,6 +24,9 @@ public class MusicEngine : MonoBehaviour
             source.clip = audioClips[clips[j]];
             clips.RemoveAt(j);
             audioSources[i] = source;
+            audioSources[i].Play();
+            audioSources[i].mute = true;
+            audioSources[i].loop = true;
         }
 
     }
@@ -32,7 +35,9 @@ public class MusicEngine : MonoBehaviour
     {
         foreach (var source in audioSources)
         {
-            // Debug.Log($"Source found with clip: {source.clip.name}");
+            source.Play();
+            source.loop = true;
+            source.mute = true;
         }
         labyrinthPathLength = LabyrinthState.pathLength;
         Debug.Log($"labyrinth length: {labyrinthPathLength} audio clips length: {audioClips.Length}");
@@ -41,7 +46,23 @@ public class MusicEngine : MonoBehaviour
 
         CalculatePlayerUnit();
         Debug.Log($"playerUnit is {playerUnit}");
+    }
+
+    private void AddressChoir()
+    {
+        for (int i = 0; i < audioSources.Length; i++)
+        {
+            AudioSource source = audioSources[i];
+            if (i < playerUnit)
+            {
+                source.mute = false;
+            }
+            else
+            {
+                source.mute = true;
+            }
         }
+    }
 
     private void CalculatePlayerUnit()
     {
@@ -59,12 +80,13 @@ public class MusicEngine : MonoBehaviour
         if (newUnit != playerUnit)
         {
             Debug.Log($"playerCell: {playerCell}");
-            Debug.Log($"playerCellFloat: {_playerCellFloat}");
-            Debug.Log($"tmpRaw: {tmpRaw}");
-            Debug.Log($"tmp: {tmp}");
-            Debug.Log($"newUnit: {newUnit}");
+            // Debug.Log($"playerCellFloat: {_playerCellFloat}");
+            // Debug.Log($"tmpRaw: {tmpRaw}");
+            // Debug.Log($"tmp: {tmp}");
+            // Debug.Log($"newUnit: {newUnit}");
             playerUnit = newUnit;
             Debug.Log($"New playerUnit: {playerUnit}");
+            AddressChoir();
         }
     }
 
