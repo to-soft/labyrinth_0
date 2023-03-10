@@ -26,30 +26,46 @@ public class MusicEngine : MonoBehaviour
             audioSources[i] = source;
         }
 
-        labyrinthPathLength = LabyrinthState.pathLength;
-        unit = (int)Math.Floor((float)(labyrinthPathLength / audioClips.Length));
     }
 
     void Start()
     {
         foreach (var source in audioSources)
         {
-            Debug.Log($"Source found with clip: {source.clip.name}");
+            // Debug.Log($"Source found with clip: {source.clip.name}");
         }
+        labyrinthPathLength = LabyrinthState.pathLength;
+        Debug.Log($"labyrinth length: {labyrinthPathLength} audio clips length: {audioClips.Length}");
+        unit = (int)Math.Floor((float)(labyrinthPathLength / audioClips.Length));
+        Debug.Log($"unit: {unit}");
+
         CalculatePlayerUnit();
-    }
+        Debug.Log($"playerUnit is {playerUnit}");
+        }
 
     private void CalculatePlayerUnit()
     {
-        if (Player.DistanceFromGoal == Int32.MaxValue)
+        if (Player.DistanceFromGoal > labyrinthPathLength)
         {
-            playerCell = 0;
-            playerUnit = 0;
+            playerCell = -1;
+            playerUnit = -1;
             return;
-        };
+        }
         playerCell = labyrinthPathLength - Player.DistanceFromGoal;
-        playerUnit = (int)Math.Ceiling((float)(playerCell / unit));
-        Debug.Log($"playerUnit: {playerUnit}");
+        float _playerCellFloat = playerCell;
+        double tmpRaw = _playerCellFloat / unit;
+        double tmp = Math.Ceiling(tmpRaw);
+        int newUnit = (int)tmp;
+        if (newUnit != playerUnit)
+        {
+            Debug.Log($"playerCell: {playerCell}");
+            Debug.Log($"playerCellFloat: {_playerCellFloat}");
+            Debug.Log($"tmpRaw: {tmpRaw}");
+            Debug.Log($"tmp: {tmp}");
+            Debug.Log($"newUnit: {newUnit}");
+            playerUnit = newUnit;
+            Debug.Log($"New playerUnit: {playerUnit}");
+        }
     }
 
     private void Update()

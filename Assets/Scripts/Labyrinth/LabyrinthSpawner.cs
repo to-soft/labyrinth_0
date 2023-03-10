@@ -66,6 +66,7 @@ public class LabyrinthSpawner : MonoBehaviour
         {
             Random.InitState(randomSeed);
         }
+        
 
         switch (algorithm)
         {
@@ -75,6 +76,7 @@ public class LabyrinthSpawner : MonoBehaviour
                 break;
         }
 
+        Debug.Log($"seed value: {randomSeed}");
         mLabyrinthContainer.GenerateLabyrinth();
         _wallPosition = wall.transform.position;
         _rampPosition = ramp.transform.position;
