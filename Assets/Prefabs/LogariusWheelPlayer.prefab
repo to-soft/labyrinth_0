@@ -136,7 +136,7 @@ GameObject:
   - component: {fileID: 6345909685880666272}
   - component: {fileID: 7816311873878386592}
   - component: {fileID: 6295959199384789480}
-  - component: {fileID: 8574839608448019610}
+  - component: {fileID: 2047916791228361259}
   m_Layer: 0
   m_Name: LogariusWheelPlayer
   m_TagString: Player
@@ -224,7 +224,7 @@ MonoBehaviour:
   health: 10
   playerObject: {fileID: 4767460432756689571}
   nearestRespawn: {fileID: 0}
---- !u!114 &8574839608448019610
+--- !u!114 &2047916791228361259
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -233,17 +233,17 @@ MonoBehaviour:
   m_GameObject: {fileID: 3446452906474421657}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e4e74908dc98961fea629a3838096533, type: 3}
+  m_Script: {fileID: 11500000, guid: 75f22f9cc31c89db5982301e8c791f14, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   lwheel: {fileID: 2345359207032543665}
   rwheel: {fileID: 5526721862255010800}
-  maxMotorTorque: 1000
-  maxSteeringAngle: 30
+  maxMotorTorque: 700
+  maxBrakeTorque: 100
   wheelSettings:
     mass: 200
     radius: 0.7
-    dampingRate: 0.25
+    dampingRate: 0
     suspensionDistance: 0
     forceAppPointDistance: 0
     center: {x: 0, y: 0, z: 0}
@@ -252,16 +252,16 @@ MonoBehaviour:
       damper: 4500
       targetPosition: 0.5
     forwardFriction:
-      extrenumSlip: 0.1
+      extrenumSlip: 0.001
       extrenumForce: 1
-      asymptoteSlip: 2
+      asymptoteSlip: 0.05
       asymptoteForce: 0.5
       stiffness: 5
     sidewaysFriction:
-      extrenumSlip: 0.2
-      extrenumForce: 1
-      asymptoteSlip: 0.5
-      asymptoteForce: 0.75
+      extrenumSlip: 1
+      extrenumForce: 0.2
+      asymptoteSlip: 5
+      asymptoteForce: 0.1
       stiffness: 1
 --- !u!1001 &5685800923742107634
 PrefabInstance:
@@ -351,7 +351,7 @@ WheelCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1608202330136915179}
   serializedVersion: 2
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Center: {x: 0.1, y: 0, z: 0}
   m_Radius: 0.7
   m_SuspensionSpring:
     spring: 35000
@@ -405,7 +405,7 @@ WheelCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8357706087168851094}
   serializedVersion: 2
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Center: {x: -0.1, y: 0, z: 0}
   m_Radius: 0.7
   m_SuspensionSpring:
     spring: 35000

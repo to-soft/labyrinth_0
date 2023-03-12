@@ -3,7 +3,10 @@ using UnityEngine;
 using UnityEngine.ProBuilder;
 using Cursor = UnityEngine.Cursor;
 
-public class CharacterMovement : MonoBehaviour
+
+
+public enum WheelName { left, right }
+public class TransWheelMovement : MonoBehaviour
 {
     public float strength = 0.5f;
     public float friction = 0.1f;
@@ -30,7 +33,6 @@ public class CharacterMovement : MonoBehaviour
     private Transform _rwheel;
     private float _rvel;
     private float _racc;
-    private enum Wheel { left, right }
 
     void Start()
     {
@@ -60,10 +62,10 @@ public class CharacterMovement : MonoBehaviour
         Cursor.visible = false;
     }
 
-    float getFriction(Wheel wheel)
+    float getFriction(WheelName wheel)
     {
         return -1 // opposite direction
-               * (wheel == Wheel.left ? _lvel : _rvel) // wheel velocity
+               * (wheel == WheelName.left ? _lvel : _rvel) // wheel velocity
                * friction // coefficient of friction
                * 1;  // (_rigidbody.mass * Physics.gravity).magnitude; // normal of gravity
     }
@@ -99,11 +101,11 @@ public class CharacterMovement : MonoBehaviour
             // _rigidbody.velocity = new Vector3(0, jumpHeight, 0);
     }
     
-    void applyForce(float force, Wheel wheel)
+    void applyForce(float force, WheelName wheel)
     {
         float f = force / _lCollider.mass;
-        if (wheel == Wheel.right) _racc += f;
-        if (wheel == Wheel.left) _lacc += f;
+        if (wheel == WheelName.right) _racc += f;
+        if (wheel == WheelName.left) _lacc += f;
     }
 
     void updateVelocities()
@@ -117,12 +119,12 @@ public class CharacterMovement : MonoBehaviour
         _racc = 0;
     }
 
-    private void updateWheelRotation(Wheel movingWheel, Wheel axisWheel, float dTime)
+    private void updateWheelRotation(WheelName movingWheel, WheelName axisWheel, float dTime)
     {
-        float distance = dTime * (movingWheel == Wheel.right ? _rvel : _lvel);
-        Transform mover = movingWheel == Wheel.right ? _rwheel : _lwheel;
-        Transform axis = axisWheel == Wheel.left ? _lwheel : _rwheel;
-        float bodyDir = movingWheel == Wheel.right ? -1 : 1;
+        float distance = dTime * (movingWheel == WheelName.right ? _rvel : _lvel);
+        Transform mover = movingWheel == WheelName.right ? _rwheel : _lwheel;
+        Transform axis = axisWheel == WheelName.left ? _lwheel : _rwheel;
+        float bodyDir = movingWheel == WheelName.right ? -1 : 1;
         float bodyRotation = (bodyDir * 180 * distance) / (Mathf.PI * _width);
 
         Vector3 pivot = axis.position + (axis.position - mover.position);

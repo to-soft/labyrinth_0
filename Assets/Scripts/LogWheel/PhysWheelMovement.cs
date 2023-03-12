@@ -3,61 +3,60 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CarMovement : MonoBehaviour
+public class PhysWheelMovement : MonoBehaviour
 {
     public WheelCollider lwheel;
     public WheelCollider rwheel;
     public float maxMotorTorque;
     public float maxBrakeTorque;
     public WheelSettings wheelSettings;
-
-
-    // Start is called before the first frame update
+    
     void Start()
     {
-        wheelSettings.applyToWheel(lwheel);
-        wheelSettings.applyToWheel(rwheel);
+        wheelSettings.applyConfigToWheel(lwheel);
+        wheelSettings.applyConfigToWheel(rwheel);
+    }
+    
+    void FixedUpdate()
+    {
+        float left = Input.GetAxis("Left");
+        float right = Input.GetAxis("Right");
+        float brake = Input.GetAxis("Brake");
+        float leftBrake = Input.GetAxis("Left Brake");
+        float rightBrake = Input.GetAxis("Right Brake");
+        // Debug.Log($"left:{left}  right:{right}  brake:{brake}  left brake:{leftBrake}  right brake:{rightBrake}");
+        
+        float lmotor = maxMotorTorque * left;
+        float rmotor = maxMotorTorque * right;
+        float ubrake = maxBrakeTorque * brake;
+        float lbrake = maxBrakeTorque * leftBrake;
+        float rbrake = maxBrakeTorque * rightBrake;
+
+        lwheel.motorTorque = lmotor;
+        rwheel.motorTorque = rmotor;
+        
+        lwheel.brakeTorque = ubrake;
+        rwheel.brakeTorque = ubrake;
+
+        if (lbrake > 0) lwheel.brakeTorque = lbrake;
+        if (rbrake > 0) rwheel.brakeTorque = rbrake;
+
+        if (lwheel.brakeTorque == 0f && lwheel.motorTorque == 0) lwheel.brakeTorque = 10;
+        if (rwheel.brakeTorque == 0f && rwheel.motorTorque == 0) rwheel.brakeTorque = 10;
+        
+        applyPositionToWheel(lwheel);
+        applyPositionToWheel(rwheel);
+        
     }
 
     public void applyPositionToWheel(WheelCollider collider)
     {
         Transform wheel = collider.transform;
-
         Vector3 position;
         Quaternion rotation;
-        // Debug.Log(position);
         collider.GetWorldPose(out position, out rotation);
         wheel.position = position;
         wheel.rotation = rotation;
-    }
-    
-    // Update is called once per frame
-    void FixedUpdate()
-    {
-        float brake = maxBrakeTorque * Input.GetAxis("Brake");
-        float lmotor = maxMotorTorque * Input.GetAxis("Left");
-        float rmotor = maxMotorTorque * Input.GetAxis("Right");
-        float lbrake = maxBrakeTorque * Input.GetAxis("Left Brake");
-        float rbrake = maxBrakeTorque * Input.GetAxis("Right Brake");
-        
-        // float steering = maxSteeringAngle * Input.GetAxis("Horizontal");
-        //
-        // lwheel.steerAngle = steering;
-        // rwheel.steerAngle = steering;
-        lwheel.motorTorque = lmotor;
-        rwheel.motorTorque = rmotor;
-
-        lwheel.brakeTorque = brake;
-        rwheel.brakeTorque = brake;
-
-        if (lbrake > 0)
-            lwheel.brakeTorque = lbrake;
-        if (rbrake > 0)
-            rwheel.brakeTorque = rbrake;
-        
-        applyPositionToWheel(lwheel);
-        applyPositionToWheel(rwheel);
-        
     }
 }
 
@@ -75,7 +74,7 @@ public class WheelSettings
     public ForwardFriction forwardFriction;
     public SidewaysFriction sidewaysFriction;
 
-    public void applyToWheel(WheelCollider wheel)
+    public void applyConfigToWheel(WheelCollider wheel)
     {
         wheel.mass = mass / 2;
         wheel.radius = radius;
