@@ -1,8 +1,10 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using Random = UnityEngine.Random;
+
 
 public class MusicEngine : MonoBehaviour
 {
@@ -24,9 +26,6 @@ public class MusicEngine : MonoBehaviour
             source.clip = audioClips[clips[j]];
             clips.RemoveAt(j);
             audioSources[i] = source;
-            audioSources[i].Play();
-            audioSources[i].mute = true;
-            audioSources[i].loop = true;
         }
 
     }
@@ -37,15 +36,27 @@ public class MusicEngine : MonoBehaviour
         {
             source.Play();
             source.loop = true;
-            source.mute = true;
+            source.volume = 0;
         }
         labyrinthPathLength = LabyrinthState.pathLength;
         Debug.Log($"labyrinth length: {labyrinthPathLength} audio clips length: {audioClips.Length}");
         unit = (int)Math.Floor((float)(labyrinthPathLength / audioClips.Length));
         Debug.Log($"unit: {unit}");
-
         CalculatePlayerUnit();
         Debug.Log($"playerUnit is {playerUnit}");
+    }
+    
+    public static IEnumerator StartFade(AudioSource audioSource, float duration, float targetVolume)
+    {
+        float currentTime = 0;
+        float start = audioSource.volume;
+        while (currentTime < duration)
+        {
+            currentTime += Time.deltaTime;
+            audioSource.volume = Mathf.Lerp(start, targetVolume, currentTime / duration);
+            yield return null;
+        }
+        yield break;
     }
 
     private void AddressChoir()
@@ -55,11 +66,12 @@ public class MusicEngine : MonoBehaviour
             AudioSource source = audioSources[i];
             if (i < playerUnit)
             {
-                source.mute = false;
+                StartCoroutine(StartFade(source, 1, 1));
             }
             else
             {
-                source.mute = true;
+                StartCoroutine(StartFade(source, 1, 0));
+                // StartFade(source, 1, 0);
             }
         }
     }
