@@ -26,6 +26,8 @@ public class KineticWheelMovement : MonoBehaviour
     private float _radius;
     private float _radiusPi;
 
+    public string Fart = "Farty";
+
     private GameObject _wheel;
 	private Transform _lwheel;
     private float _lvel;

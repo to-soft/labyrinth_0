@@ -71,7 +71,7 @@ public class Door : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.CompareTag("Player"))
+        if (other.gameObject.CompareTag("PlayerBody"))
         {
             Debug.Log("Door zone touched by player");
             isOpen = true;
@@ -80,7 +80,7 @@ public class Door : MonoBehaviour
 
     private void OnTriggerExit(Collider other)
     {
-        if (other.gameObject.CompareTag("Player"))
+        if (other.gameObject.CompareTag("PlayerBody"))
         {
             Debug.Log("Door zone left by player");
             isOpen = false;

@@ -2,17 +2,6 @@ using System;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
-public enum PossibleDirection
-{
-    Start,
-    Right,
-    Front,
-    Left,
-    Back,
-    Down,
-    Up,
-}
-
 public class LabyrinthGenerator : LabyrinthContainer
 {
     public LabyrinthGenerator(int rows, int columns, int stories) : base(rows, columns, stories)
@@ -21,7 +10,10 @@ public class LabyrinthGenerator : LabyrinthContainer
     }
 
     public LabyrinthCell EscapeCell;
-    public int furthestDistance = 0;
+    // longest possible path in labyrinth (start point if spawning inside labyrinth)
+    public int furthestDistanceRaw = 0;
+    // longest possible path from labyrinth start
+    public int furthestDistanceFromStart = 0;
     public int prevCellDistance = 0;
     public int startingColumn;
 
@@ -30,13 +22,16 @@ public class LabyrinthGenerator : LabyrinthContainer
         startingColumn = (int)Math.Ceiling(ColumnCount / 2f) - 1;
         VisitCell(0, startingColumn, 0, 
             Direction.Start, GetLabyrinthCell(0, startingColumn, 0), Direction.Base);
-        Debug.Log($"Longest path: {furthestDistance}; setting goal...");
+        Debug.Log($"Longest path: {furthestDistanceFromStart}; setting goal...");
+        LabyrinthState.pathLength = furthestDistanceFromStart;
         StudyLabyrinth();
         RepairLabyrinth();
         SolveLabyrinth();
         CartographLabyrinth();
+        // WeatherLabyrinth();
     }
 
+    // *** Post-Generation methods *** //
     private void StudyLabyrinth()
     {
         Debug.Log($"\n###LABYRINTH RESEARCH###\n");
@@ -63,7 +58,58 @@ public class LabyrinthGenerator : LabyrinthContainer
         Debug.Log($"Forgotten cell count: {forgottenCellCount}");
         Debug.Log($"\n###END RESEARCH###\n");
     }
+    
+    private void RepairLabyrinth()
+    {
+        for (int story = 0; story < StoryCount; story++)
+        {
+            for (int row = 0; row < RowCount; row++)
+            {
+                for (int column = 0; column < ColumnCount; column++)
+                {
+                    LabyrinthCell cell = GetLabyrinthCell(row, column, story);
+                    
+                    // fill in unvisited cells
+                    if (!cell.IsVisited) { SealCell(cell); }
+                    else { cell.IsVisited = false; }
+                        
+                    // remove overlapping walls between neighbor cells
+                    if (cell.WallFront && row + 1 < RowCount)
+                    {
+                        GetLabyrinthCell(row + 1, column, story).WallBack = false;
+                    }
+                    if (cell.WallRight && column + 1 < ColumnCount) 
+                    {
+                        GetLabyrinthCell(row, column + 1, story).WallLeft = false;
+                    }
+                    if (cell.Ceiling && story + 1 < StoryCount)
+                    {
+                        LabyrinthCell above = GetLabyrinthCell(row, column, story + 1);
+                        above.Floor = false;
+                        if (HasRamp(above))
+                        {
+                            cell.Ceiling = false;
+                        }
+                    }
+                }
+            }
+        }
 
+        LabyrinthCell goal = GetLabyrinthCell(EscapeCell.Row, EscapeCell.Column, EscapeCell.Story);
+        goal.IsGoal = true;
+    }
+
+    private void SolveLabyrinth()
+    {
+        // Debug.Log("SolveLabyrinth: Beginning backtracker...");
+        // Debug.Log($"SolveLabyrinth: Escape cell: " +
+                  // $"row {EscapeCell.Row} col {EscapeCell.Column} story {EscapeCell.Story}");
+        Backtrack(EscapeCell.Row, EscapeCell.Column, EscapeCell.Story, -1, Direction.Start);
+        LabyrinthCell start = GetLabyrinthCell(0, startingColumn, 0);
+        LabyrinthState.longestPathLength = furthestDistanceRaw;
+        Debug.Log($"SolveLabyrinth done; length from start to finish: {start.DistanceFromGoal}");
+    }
+    
     private void CartographLabyrinth()
     {
         for (int story = 0; story < StoryCount; story++)
@@ -77,10 +123,27 @@ public class LabyrinthGenerator : LabyrinthContainer
             }
         }
     }
-    
+
+    // private void WeatherLabyrinth()
+    // {
+    //     for (int story = 0; story < StoryCount; story++)
+    //     {
+    //         for (int row = 0; row < RowCount; row++)
+    //         {
+    //             for (int column = 0; column < ColumnCount; column++)
+    //             {
+    //                 LabyrinthState.LabyrinthMap[row, column, story] = GetLabyrinthCell(row, column, story);
+    //             }
+    //         }
+    //     }
+    // }
+
+    // *** Post-Generation util methods *** //
+
     private void Backtrack(int row, int column, int story, int prevDistance, Direction prevMove)
     {
-        
+        // recursive func to map labyrinth paths
+        // called in: SolveLabyrinth, Backtrack
         if (story + 1 > StoryCount || story < 0
             || column + 1 > ColumnCount || column < 0 
             || row + 1 > RowCount || row < 0)
@@ -95,6 +158,10 @@ public class LabyrinthGenerator : LabyrinthContainer
         
         int distanceFromGoal = prevDistance + 1;
         cell.DistanceFromGoal = distanceFromGoal;
+        if (distanceFromGoal > furthestDistanceRaw)
+        {
+            furthestDistanceRaw = distanceFromGoal;
+        }
         if (!HasWall(cell, Direction.Right) && prevMove != Direction.Left)
         {
             Backtrack(row, column + 1, story, distanceFromGoal, Direction.Right);
@@ -126,20 +193,20 @@ public class LabyrinthGenerator : LabyrinthContainer
         }
     }
 
-    private void SolveLabyrinth()
+    private bool HasRamp(LabyrinthCell cell)
     {
-        // Debug.Log("SolveLabyrinth: Beginning backtracker...");
-        // Debug.Log($"SolveLabyrinth: Escape cell: " +
-                  // $"row {EscapeCell.Row} col {EscapeCell.Column} story {EscapeCell.Story}");
-        Backtrack(EscapeCell.Row, EscapeCell.Column, EscapeCell.Story, -1, Direction.Start);
-        LabyrinthCell start = GetLabyrinthCell(0, startingColumn, 0);
-        Debug.Log($"SolveLabyrinth done; length from start to finish: {start.DistanceFromGoal}");
+        return cell.RampLeft || cell.RampRight || cell.RampBack || cell.RampFront;
+    }
+    
+    private bool HasFloor(LabyrinthCell cell)
+    {
+        return HasRamp(cell) || cell.Floor;
     }
 
     private bool HasWall(LabyrinthCell cell, Direction direction)
     {
-        bool hasRamp = cell.RampLeft || cell.RampRight || cell.RampBack || cell.RampFront;
-        
+        // returns whether there is a wall in the given direction, including the opposite wall in the adjacent cell
+        // used in: Backtrack, SealCell
         switch (direction)
         {
             case Direction.Front:
@@ -147,8 +214,7 @@ public class LabyrinthGenerator : LabyrinthContainer
                 if (cell.Row + 1 >= RowCount) { return true; }
                 return GetLabyrinthCell(cell.Row + 1, cell.Column, cell.Story).WallBack;
             case Direction.Back:
-                if (cell.Door) { return true; }
-                if (cell.WallBack) { return true; }
+                if (cell.Door || cell.WallBack) { return true; }
                 if (cell.Row <= 0) { return true; }
                 return GetLabyrinthCell(cell.Row - 1, cell.Column, cell.Story).WallFront;
             case Direction.Right:
@@ -162,94 +228,36 @@ public class LabyrinthGenerator : LabyrinthContainer
             case Direction.Up:
                 if (cell.Ceiling) { return true;}
                 if (cell.Story + 1 >= StoryCount) { return true; }
-                LabyrinthCell nextCell = GetLabyrinthCell(cell.Row, cell.Column, cell.Story + 1);
-                return (nextCell.Floor || 
-                        nextCell.RampLeft || nextCell.RampBack || nextCell.RampFront || nextCell.RampFront);
+                LabyrinthCell aboveCell = GetLabyrinthCell(cell.Row, cell.Column, cell.Story + 1);
+                return HasFloor(aboveCell);
             case Direction.Down:
-                if (cell.Floor || hasRamp) { return true;}
+                if (HasFloor(cell)) { return true; }
                 if (cell.Story <= 0) { return true; }
                 return GetLabyrinthCell(cell.Row, cell.Column, cell.Story - 1).Ceiling;
             default:
                 return true;
         }
     }
-    // private bool HasAdjacentWall(LabyrinthCell cell, Direction direction)
-    // {
-    //     switch (direction)
-    //     {
-    //         case Direction.Front:
-    //             if (cell.Row + 1 >= RowCount) { return false; }
-    //             return GetLabyrinthCell(cell.Row + 1, cell.Column, cell.Story).WallBack;
-    //         case Direction.Back:
-    //             if (cell.Row <= 0) { return false; }
-    //             return GetLabyrinthCell(cell.Row - 1, cell.Column, cell.Story).WallFront;
-    //         case Direction.Right:
-    //             if (cell.Column + 1 >= ColumnCount) { return false; }
-    //             return GetLabyrinthCell(cell.Row, cell.Column + 1, cell.Story).WallLeft;
-    //         case Direction.Left:
-    //             if (cell.Column <= 0) { return false; }
-    //             return GetLabyrinthCell(cell.Row, cell.Column - 1, cell.Story).WallRight;
-    //         case Direction.Up:
-    //             if (cell.Story + 1 >= StoryCount) { return false; }
-    //             return GetLabyrinthCell(cell.Row, cell.Column, cell.Story + 1).Floor;
-    //         case Direction.Down:
-    //             if (cell.Story <= 0) { return false; }
-    //             return GetLabyrinthCell(cell.Row, cell.Column, cell.Story - 1).Ceiling;
-    //         default:
-    //             return false;
-    //     }
-    // }
 
-    private void RepairLabyrinth()
+    private void SealCell(LabyrinthCell cell)
     {
-        for (int story = 0; story < StoryCount; story++)
+        // Debug.Log($"filling in cell: x{column} y{story} z{row}");
+        cell.WallFront = cell.WallRight = cell.Ceiling = true;
+        if (!HasWall(cell, Direction.Back) || cell.Row == 0)
         {
-            for (int row = 0; row < RowCount; row++)
-            {
-                for (int column = 0; column < ColumnCount; column++)
-                {
-                    LabyrinthCell cell = GetLabyrinthCell(row, column, story);
-                    
-                    // fill in unvisited cells
-                    if (!cell.IsVisited)
-                    {
-                        // Debug.Log($"filling in cell: x{column} y{story} z{row}");
-                        cell.WallFront = cell.WallRight = cell.WallLeft = cell.Ceiling = cell.Floor = true;
-                        if (!HasWall(cell, Direction.Back))
-                        {
-                            cell.WallBack = true;
-                        }
-                    }
-                    else
-                    {
-                        cell.IsVisited = false;
-                    }
-                        
-                    // remove overlapping walls between neighbor cells
-                    if (cell.WallFront && row + 1 < RowCount)
-                    {
-                        GetLabyrinthCell(row + 1, column, story).WallBack = false;
-                    }
-                    if (cell.WallRight && column + 1 < ColumnCount) 
-                    {
-                        GetLabyrinthCell(row, column + 1, story).WallLeft = false;
-                    }
-                    if (cell.Ceiling && story + 1 < StoryCount)
-                    {
-                        LabyrinthCell above = GetLabyrinthCell(row, column, story + 1);
-                        above.Floor = false;
-                        if (above.RampFront || above.RampBack || above.RampRight || above.RampLeft)
-                        {
-                            cell.Ceiling = false;
-                        }
-                    }
-                }
-            }
+            cell.WallBack = true;
         }
-
-        LabyrinthCell goal = GetLabyrinthCell(EscapeCell.Row, EscapeCell.Column, EscapeCell.Story);
-        goal.IsGoal = true;
+        if (!HasWall(cell, Direction.Left) || cell.Column == 0)
+        {
+            cell.WallLeft = true;
+        }
+        if (!HasWall(cell, Direction.Down) || cell.Story == 0)
+        {
+            cell.Floor = true;
+        }
     }
+    
+    // *** Labyrinth generation util methods *** //
 
     private bool CanAscendOrDescend(int row, int column, int story, Direction direction, Direction directionVertical)
     {
@@ -278,10 +286,10 @@ public class LabyrinthGenerator : LabyrinthContainer
         // Debug.Log("is visited: " + thisCell.IsVisited);
         
         int currentDistance = prevCellDistance + 1;
-        if (currentDistance > furthestDistance)
+        if (currentDistance > furthestDistanceFromStart)
         {
             // Debug.Log($"new furthest distance: {currentDistance}");
-            furthestDistance = currentDistance;
+            furthestDistanceFromStart = currentDistance;
             EscapeCell = thisCell;
         }
         
@@ -300,7 +308,6 @@ public class LabyrinthGenerator : LabyrinthContainer
         if (createRamp)
         {
             // has to go same direction as last iteration's moveMade (this iteration's prevModeMade)
-            // prevCell.Floor = story == 0;
             thisCell.IsVisited = true;
             prevCellDistance = currentDistance;
             switch (prevMoveMade)
