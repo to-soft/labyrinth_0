@@ -6,7 +6,7 @@ using Cursor = UnityEngine.Cursor;
 
 
 public enum WheelName { left, right }
-public class TransWheelMovement : MonoBehaviour
+public class KineticWheelMovement : MonoBehaviour
 {
     public float strength = 0.5f;
     public float friction = 0.1f;
@@ -77,19 +77,19 @@ public class TransWheelMovement : MonoBehaviour
                 
         // get input values for frame
         
-        // float leftInput = Input.GetAxis("Left");
-        // float rightInput = Input.GetAxis("Right");
-        //
-        // if (leftInput != 0) applyForce(strength * leftInput, Wheel.left);
-        // if (rightInput != 0) applyForce(strength * rightInput, Wheel.right);
-        //
-        // if (_lvel != 0) applyForce(getFriction(Wheel.left), Wheel.left);
-        // if (_rvel != 0) applyForce(getFriction(Wheel.right), Wheel.right);
-        //
-        // updateVelocities();
-        //
-        // updateWheelRotation(Wheel.left, Wheel.right, dt);
-        // updateWheelRotation(Wheel.right, Wheel.left, dt);
+        float leftInput = Input.GetAxis("Left");
+        float rightInput = Input.GetAxis("Right");
+        
+        if (leftInput != 0) applyForce(strength * leftInput, WheelName.left);
+        if (rightInput != 0) applyForce(strength * rightInput, WheelName.right);
+        
+        if (_lvel != 0) applyForce(getFriction(WheelName.left), WheelName.left);
+        if (_rvel != 0) applyForce(getFriction(WheelName.right), WheelName.right);
+        
+        updateVelocities();
+        
+        updateWheelRotation(WheelName.left, WheelName.right, dt);
+        updateWheelRotation(WheelName.right, WheelName.left, dt);
         
         cameraPivot.transform.localRotation = Quaternion.Euler(transform.localRotation.y, 0, 0);
 

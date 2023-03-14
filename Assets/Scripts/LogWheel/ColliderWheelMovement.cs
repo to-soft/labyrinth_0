@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PhysWheelMovement : MonoBehaviour
+public class ColliderWheelMovement : MonoBehaviour
 {
     public WheelCollider lwheel;
     public WheelCollider rwheel;
