@@ -5,6 +5,7 @@ using UnityEngine;
 public class InventoryUI : MonoBehaviour
 {
     public ItemSlot slotPrefab;
+    
     public void Start()
     {
         InventorySystem.instance.OnInventoryChangedEvent += OnUpdateInventory;

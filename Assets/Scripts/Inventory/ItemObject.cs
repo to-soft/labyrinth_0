@@ -38,7 +38,6 @@ public class ItemObject : MonoBehaviour
         Debug.Log(other.gameObject.tag);
         if (other.gameObject.CompareTag("PlayerBody"))
         {
-            
             // Debug.Log(ItemName + " touched by player");
             OnHandlePickupItem();
         }

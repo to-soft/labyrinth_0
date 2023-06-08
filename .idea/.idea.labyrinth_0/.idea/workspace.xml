@@ -1,8 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
   <component name="ChangeListManager">
     <list default="true" id="7c4c6207-7dee-4ede-8d95-92224433f65e" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Movement/CarMovement.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Movement/CarMovement.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.labyrinth_0/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.labyrinth_0/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/LabyrinthAssets.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/LabyrinthAssets.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/LabyrinthAssets/Ceiling.prefab.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/LabyrinthAssets/Ceiling.prefab.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/LabyrinthAssets/CellUnits.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/LabyrinthAssets/CellUnits.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/LabyrinthAssets/CellUnits/SymmetryTest.prefab.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/LabyrinthAssets/CellUnits/SymmetryTest.prefab.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/LabyrinthAssets/Door.prefab.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/LabyrinthAssets/Door.prefab.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/LabyrinthAssets/Floor.prefab.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/LabyrinthAssets/Floor.prefab.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/LabyrinthAssets/GoalMarker.prefab.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/LabyrinthAssets/GoalMarker.prefab.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/LabyrinthAssets/LabyrinthSpawner.prefab.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/LabyrinthAssets/LabyrinthSpawner.prefab.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/LabyrinthAssets/Materials.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/LabyrinthAssets/Materials.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/LabyrinthAssets/Materials/Mat.mat.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/LabyrinthAssets/Materials/Mat.mat.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/LabyrinthAssets/Materials/brickwall-Mat.mat.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/LabyrinthAssets/Materials/brickwall-Mat.mat.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/LabyrinthAssets/Ramp.prefab.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/LabyrinthAssets/Ramp.prefab.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/LabyrinthAssets/Wall.prefab.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/LabyrinthAssets/Wall.prefab.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/LabyrinthAssets/_misc.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/LabyrinthAssets/_misc.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/LabyrinthAssets/_misc/pillar.prefab.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/LabyrinthAssets/_misc/pillar.prefab.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/LabyrinthAssets/_misc/wall 1.prefab.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/LabyrinthAssets/_misc/wall 1.prefab.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/LabyrinthAssets/brick.fbx.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/LabyrinthAssets/brick.fbx.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/torch_wall.prefab.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/torch_wall.prefab.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Inventory/ItemObject.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Inventory/ItemObject.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Inventory/UI/InventoryUI.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Inventory/UI/InventoryUI.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -12,7 +35,6 @@
   <component name="HighlightingSettingsPerFile">
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Camera/MoveCamera.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Camera/PlayerCamera.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Assets/Scripts/Movement/CharacterMovement.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Movement/PlayerMovement.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Player/Player.cs" root0="FORCE_HIGHLIGHTING" />
   </component>
@@ -30,13 +52,17 @@
     &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
     &quot;settings.editor.selected.configurable&quot;: &quot;editor.preferences.completion&quot;,
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   },
   &quot;keyToStringList&quot;: {
     &quot;rider.external.source.directories&quot;: [
-      &quot;/home/kagrenac/.config/JetBrains/Rider2022.3/resharper-host/DecompilerCache&quot;,
-      &quot;/home/kagrenac/.config/JetBrains/Rider2022.3/resharper-host/SourcesCache&quot;,
+      &quot;/home/kagrenac/.config/JetBrains/Rider2023.1/resharper-host/DecompilerCache&quot;,
+      &quot;/home/kagrenac/.config/JetBrains/Rider2023.1/resharper-host/SourcesCache&quot;,
       &quot;/home/kagrenac/.local/share/Symbols/src&quot;
     ]
   }
@@ -45,6 +71,14 @@
     <configuration name="Start Unity" type="RunUnityExe" factoryName="Unity Executable">
       <option name="EXE_PATH" value="$USER_HOME$/Unity/Hub/Editor/2023.1.0a22/Editor/Unity" />
       <option name="PROGRAM_PARAMETERS" value="-projectPath $PROJECT_DIR$ -debugCodeOptimization" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="PASS_PARENT_ENVS" value="1" />
+      <option name="USE_EXTERNAL_CONSOLE" value="0" />
+      <method v="2" />
+    </configuration>
+    <configuration name="Unit Tests (batch mode)" type="RunUnityExe" factoryName="Unity Executable">
+      <option name="EXE_PATH" value="$USER_HOME$/Unity/Hub/Editor/2023.1.0a22/Editor/Unity" />
+      <option name="PROGRAM_PARAMETERS" value="-runTests -batchmode -projectPath $PROJECT_DIR$ -testResults Logs/results.xml -testPlatform EditMode -debugCodeOptimization" />
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
       <option name="PASS_PARENT_ENVS" value="1" />
       <option name="USE_EXTERNAL_CONSOLE" value="0" />
@@ -102,6 +136,9 @@
       <workItem from="1677730826806" duration="8697000" />
       <workItem from="1678332260351" duration="2000" />
       <workItem from="1678332298781" duration="11119000" />
+      <workItem from="1680406498707" duration="2785000" />
+      <workItem from="1680825928719" duration="1778000" />
+      <workItem from="1681087344789" duration="669000" />
     </task>
     <servers />
   </component>
